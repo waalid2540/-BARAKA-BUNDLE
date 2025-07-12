@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baraka Bundle - Complete Demo with Multi-Language Support</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { font-family: 'Inter', system-ui, sans-serif; }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #1e40af 0%, #dc2626 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #1e40af 0%, #dc2626 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(30, 64, 175, 0.4);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            direction: rtl;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-900">
+    
+    <!-- Landing Page -->
+    <div id="landing-page" class="page active">
+        <!-- Navigation -->
+        <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-red-600 rounded-xl flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">ب</span>
+                        </div>
+                        <span class="text-xl font-bold gradient-text">Baraka Bundle</span>
+                    </div>
+                    <button onclick="showPaymentSuccess()" class="btn-primary text-white px-6 py-2 rounded-lg font-medium">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="pt-24 pb-20 bg-gradient-to-br from-blue-50 via-white to-red-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-4xl mx-auto">
+                    <div class="mb-6">
+                        <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                            <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                            Enterprise AI Solutions
+                        </span>
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                        Professional AI Islamic Tools
+                        <br>
+                        <span class="gradient-text">Built for Scale</span>
+                    </h1>
+                    
+                    <p class="text-xl text-gray-600 mb-10 leading-relaxed max-w-3xl mx-auto">
+                        Enterprise-grade AI solutions engineered specifically for the Islamic market. 
+                        Professional tools for name generation, educational content, Quranic analysis, and prayer guidance.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <button onclick="showPaymentSuccess()" class="btn-primary text-white px-8 py-4 rounded-xl font-semibold text-lg">
+                            Try Baraka Bundle →
+                        </button>
+                        <button class="border border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-medium text-lg hover:bg-gray-50 transition-colors">
+                            Watch Demo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Founder Credibility Section -->
+        <section class="py-16 bg-gradient-to-r from-blue-50 to-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">
+                        Built by Islamic Scholar & Tech Expert
+                    </h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-white rounded-2xl p-8 shadow-lg">
+                            <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <span class="text-3xl">🕌</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">Islamic Scholarship</h3>
+                            <p class="text-gray-600">
+                                Founded by a certified Imam with deep understanding of Islamic principles, 
+                                ensuring all AI outputs are authentic and religiously accurate.
+                            </p>
+                        </div>
+                        <div class="bg-white rounded-2xl p-8 shadow-lg">
+                            <div class="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <span class="text-3xl">💻</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">SaaS Engineering</h3>
+                            <p class="text-gray-600">
+                                Experienced SaaS engineer with enterprise-grade development skills, 
+                                building scalable AI solutions trusted by thousands of users.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-8 text-center">
+                        <p class="text-lg text-gray-700 font-medium">
+                            The perfect combination: <span class="gradient-text font-bold">Religious authenticity meets technical excellence</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        Professional AI Solutions
+                    </h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                        Four comprehensive tools designed with Islamic scholarship and modern technology
+                    </p>
+                </div>
+                
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <div class="card-hover bg-white rounded-3xl p-8 border border-gray-100 shadow-lg">
+                        <div class="flex items-start space-x-6">
+                            <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center">
+                                <span class="text-3xl text-white">👶</span>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-semibold text-gray-900 mb-3">Islamic Name Generator</h3>
+                                <p class="text-gray-600 mb-6">
+                                    Generate beautiful Islamic names with detailed meanings, origins, and spiritual significance.
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">10+ Languages</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Arabic Script</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-hover bg-white rounded-3xl p-8 border border-gray-100 shadow-lg">
+                        <div class="flex items-start space-x-6">
+                            <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center">
+                                <span class="text-3xl text-white">📚</span>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-semibold text-gray-900 mb-3">Islamic Stories for Kids</h3>
+                                <p class="text-gray-600 mb-6">
+                                    Create engaging, age-appropriate Islamic stories that teach moral values.
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Age Appropriate</span>
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Multi-Language</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-hover bg-white rounded-3xl p-8 border border-gray-100 shadow-lg">
+                        <div class="flex items-start space-x-6">
+                            <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                                <span class="text-3xl text-white">📖</span>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-semibold text-gray-900 mb-3">AI Tafsir Generator</h3>
+                                <p class="text-gray-600 mb-6">
+                                    Get personalized explanations of Quranic verses with contemporary applications.
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">Scholarly Accurate</span>
+                                    <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">Modern Context</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-hover bg-white rounded-3xl p-8 border border-gray-100 shadow-lg">
+                        <div class="flex items-start space-x-6">
+                            <div class="w-16 h-16 bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center">
+                                <span class="text-3xl text-white">🤲</span>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-semibold text-gray-900 mb-3">AI Du'a Generator</h3>
+                                <p class="text-gray-600 mb-6">
+                                    Find appropriate supplications for any situation with proper guidance.
+                                </p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm">Situation Specific</span>
+                                    <span class="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm">Pronunciation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section class="py-20 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                        Simple, Transparent Pricing
+                    </h2>
+                    <p class="text-xl text-gray-600">
+                        One-time purchase with lifetime access to all tools
+                    </p>
+                </div>
+                
+                <div class="max-w-lg mx-auto">
+                    <div class="card-hover bg-white rounded-3xl p-8 border-2 border-blue-200 shadow-xl">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Baraka Bundle</h3>
+                            <p class="text-gray-600 mb-6">Complete access to all AI Islamic tools</p>
+                            
+                            <div class="mb-8">
+                                <span class="text-5xl font-bold gradient-text">$5.99</span>
+                                <span class="text-gray-600 ml-2">one-time</span>
+                            </div>
+                            
+                            <button onclick="showPaymentSuccess()" class="btn-primary text-white w-full py-4 rounded-xl font-semibold text-lg mb-6">
+                                Get Baraka Bundle
+                            </button>
+                            
+                            <div class="space-y-4 text-left">
+                                <div class="flex items-center">
+                                    <span class="text-blue-500 mr-3">✓</span>
+                                    <span class="text-gray-700">Islamic Name Generator</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-blue-500 mr-3">✓</span>
+                                    <span class="text-gray-700">AI Islamic Stories for Kids</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-blue-500 mr-3">✓</span>
+                                    <span class="text-gray-700">AI Tafsir Generator</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-blue-500 mr-3">✓</span>
+                                    <span class="text-gray-700">AI Du'a Generator</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-blue-500 mr-3">✓</span>
+                                    <span class="text-gray-700">10+ Language Support</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-blue-500 mr-3">✓</span>
+                                    <span class="text-gray-700">Lifetime Access</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-8 p-4 bg-blue-50 rounded-xl border border-blue-200">
+                                <div class="text-sm text-blue-800 font-medium">
+                                    💼 Business Model: 50% revenue allocated to Masjid Madina USA expansion
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Payment Success Page -->
+    <div id="payment-success" class="page">
+        <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center px-4">
+            <div class="max-w-2xl w-full text-center">
+                <div class="mb-8">
+                    <div class="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
+                        <span class="text-white text-4xl">✅</span>
+                    </div>
+                    <h1 class="text-5xl font-bold text-gray-900 mb-4">Barakallahu Feek!</h1>
+                    <p class="text-2xl text-gray-600 mb-2">Payment Successful 🎉</p>
+                    <p class="text-lg text-blue-600 font-medium">Welcome to Baraka Bundle - Your Islamic AI Tools</p>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 mb-8">
+                    <div class="flex items-center justify-center space-x-3 mb-6">
+                        <div class="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                        <span class="text-xl text-gray-700 font-medium">Activating your AI tools...</span>
+                    </div>
+                    <div class="text-green-600 font-semibold text-lg">✅ Access granted to all 4 Islamic AI tools!</div>
+                </div>
+
+                <button onclick="showDashboard()" class="btn-primary text-white px-8 py-4 rounded-xl font-semibold text-lg mb-4">
+                    Go to Dashboard →
+                </button>
+                
+                <p class="text-gray-500">Click above to access your Islamic AI tools</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="page">
+        <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+            <!-- Header -->
+            <header class="bg-white shadow-sm border-b border-gray-100">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-14 h-14 bg-gradient-to-r from-blue-600 to-red-600 rounded-2xl flex items-center justify-center">
+                                <span class="text-white font-bold text-2xl">ب</span>
+                            </div>
+                            <div>
+                                <h1 class="text-3xl font-bold gradient-text">Baraka Bundle</h1>
+                                <p class="text-gray-600">Islamic AI Tools Dashboard</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <span class="text-sm font-medium text-gray-700">Language:</span>
+                            <select id="language-selector" onchange="changeLanguage()" class="bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm font-medium">
+                                <option value="english">🇺🇸 English</option>
+                                <option value="arabic">🇸🇦 العربية</option>
+                                <option value="turkish">🇹🇷 Türkçe</option>
+                                <option value="indonesian">🇮🇩 Bahasa Indonesia</option>
+                                <option value="urdu">🇵🇰 اردو</option>
+                                <option value="persian">🇮🇷 فارسی</option>
+                                <option value="bengali">🇧🇩 বাংলা</option>
+                                <option value="malay">🇲🇾 Bahasa Melayu</option>
+                                <option value="french">🇫🇷 Français</option>
+                                <option value="german">🇩🇪 Deutsch</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Welcome Section -->
+            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center mb-12">
+                    <h2 id="welcome-title" class="text-4xl font-bold text-gray-900 mb-4">
+                        Assalamu Alaikum! Welcome to Your Islamic AI Tools
+                    </h2>
+                    <p id="welcome-description" class="text-xl text-gray-600 max-w-3xl mx-auto mb-6">
+                        Choose any tool below to get started. All tools support multiple languages and are powered by 
+                        authentic Islamic scholarship combined with cutting-edge AI technology.
+                    </p>
+                    <div id="language-indicator" class="inline-flex items-center px-6 py-3 bg-green-100 text-green-800 rounded-full font-medium">
+                        <span class="w-2 h-2 bg-green-500 rounded-full mr-3 animate-pulse"></span>
+                        Language: 🇺🇸 English
+                    </div>
+                </div>
+
+                <!-- Tools Grid -->
+                <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                    <div onclick="showNameGenerator()" class="bg-blue-50 border-2 border-blue-200 rounded-3xl p-8 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl group">
+                        <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <span class="text-4xl">👶</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Islamic Name Generator</h3>
+                        <p class="text-gray-700 mb-6 text-lg">Generate beautiful Islamic names with meanings in your language</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-blue-600 font-semibold">
+                                <span>Open Tool →</span>
+                            </div>
+                            <div class="text-sm text-gray-500">Multi-language support</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50 border-2 border-green-200 rounded-3xl p-8 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                        <div class="w-20 h-20 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6">
+                            <span class="text-4xl">📚</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">AI Islamic Stories for Kids</h3>
+                        <p class="text-gray-700 mb-6 text-lg">Create engaging Islamic stories for children in any language</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-green-600 font-semibold">
+                                <span>Coming Soon</span>
+                            </div>
+                            <div class="text-sm text-gray-500">Multi-language support</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-50 border-2 border-purple-200 rounded-3xl p-8 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                        <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6">
+                            <span class="text-4xl">📖</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">AI Tafsir Generator</h3>
+                        <p class="text-gray-700 mb-6 text-lg">Get Quranic explanations and insights in your preferred language</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-purple-600 font-semibold">
+                                <span>Coming Soon</span>
+                            </div>
+                            <div class="text-sm text-gray-500">Multi-language support</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 border-2 border-amber-200 rounded-3xl p-8 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                        <div class="w-20 h-20 bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center mb-6">
+                            <span class="text-4xl">🤲</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">AI Du'a Generator</h3>
+                        <p class="text-gray-700 mb-6 text-lg">Find perfect prayers with pronunciation in multiple languages</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center text-amber-600 font-semibold">
+                                <span>Coming Soon</span>
+                            </div>
+                            <div class="text-sm text-gray-500">Multi-language support</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Islamic Name Generator -->
+    <div id="name-generator" class="page">
+        <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+            <!-- Header -->
+            <header class="bg-white shadow-sm border-b border-blue-100">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <button onclick="showDashboard()" class="text-gray-600 hover:text-gray-900 transition-colors">
+                                ← Back
+                            </button>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center">
+                                    <span class="text-3xl">👶</span>
+                                </div>
+                                <h1 class="text-2xl font-bold text-gray-900">Islamic Name Generator</h1>
+                            </div>
+                        </div>
+                        
+                        <select id="name-language-selector" onchange="changeNameLanguage()" class="bg-white border border-gray-300 rounded-lg px-4 py-2 font-medium">
+                            <option value="english">🇺🇸 English</option>
+                            <option value="arabic">🇸🇦 العربية</option>
+                            <option value="turkish">🇹🇷 Türkçe</option>
+                            <option value="indonesian">🇮🇩 Bahasa Indonesia</option>
+                            <option value="urdu">🇵🇰 اردو</option>
+                        </select>
+                    </div>
+                </div>
+            </header>
+
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <!-- Description -->
+                <div class="text-center mb-12">
+                    <h2 id="name-title" class="text-4xl font-bold text-gray-900 mb-4">
+                        Discover Beautiful Islamic Names
+                    </h2>
+                    <p id="name-description" class="text-lg text-gray-600 max-w-3xl mx-auto">
+                        Generate meaningful Islamic names with detailed explanations of their Arabic origins and spiritual significance.
+                    </p>
+                    <div id="name-language-indicator" class="mt-4 inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full">
+                        <span class="mr-2">🇺🇸</span>
+                        <span class="font-medium">English</span>
+                    </div>
+                </div>
+
+                <!-- Generator Form -->
+                <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 mb-8">
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <!-- Gender Selection -->
+                        <div>
+                            <label id="gender-label" class="block text-sm font-semibold text-gray-700 mb-3">Gender</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="selectGender('male')" id="male-btn" class="gender-btn py-3 px-4 rounded-xl font-medium transition-colors bg-blue-600 text-white">
+                                    <span id="male-text">Male</span>
+                                </button>
+                                <button onclick="selectGender('female')" id="female-btn" class="gender-btn py-3 px-4 rounded-xl font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200">
+                                    <span id="female-text">Female</span>
+                                </button>
+                                <button onclick="selectGender('unisex')" id="unisex-btn" class="gender-btn py-3 px-4 rounded-xl font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200">
+                                    <span id="unisex-text">Unisex</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Style Selection -->
+                        <div>
+                            <label id="style-label" class="block text-sm font-semibold text-gray-700 mb-3">Style</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="selectStyle('classic')" id="classic-btn" class="style-btn py-3 px-4 rounded-xl font-medium transition-colors bg-blue-600 text-white">
+                                    <span id="classic-text">Classic</span>
+                                </button>
+                                <button onclick="selectStyle('modern')" id="modern-btn" class="style-btn py-3 px-4 rounded-xl font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200">
+                                    <span id="modern-text">Modern</span>
+                                </button>
+                                <button onclick="selectStyle('rare')" id="rare-btn" class="style-btn py-3 px-4 rounded-xl font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200">
+                                    <span id="rare-text">Rare</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Additional Options -->
+                        <div>
+                            <label id="options-label" class="block text-sm font-semibold text-gray-700 mb-3">Additional Options</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded text-blue-600 mr-2" />
+                                    <span id="pronunciation-text" class="text-sm text-gray-700">Include pronunciation</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded text-blue-600 mr-2" checked />
+                                    <span id="arabic-script-text" class="text-sm text-gray-700">Arabic script</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generate Button -->
+                    <button onclick="generateNames()" id="generate-btn" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-8 rounded-2xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+                        ✨ <span id="generate-text">Generate Islamic Names</span>
+                    </button>
+                </div>
+
+                <!-- Generated Names Section -->
+                <div id="generated-names" style="display: none;">
+                    <h3 id="generated-title" class="text-3xl font-bold text-gray-900 text-center mb-8">
+                        Generated Names for You
+                    </h3>
+                    
+                    <div id="names-container">
+                        <!-- Names will be inserted here -->
+                    </div>
+                    
+                    <div class="text-center mt-8">
+                        <button onclick="generateNames()" id="generate-more-btn" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-8 rounded-2xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-200">
+                            <span id="generate-more-text">Generate More Names</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLanguage = 'english';
+        let selectedGender = 'male';
+        let selectedStyle = 'classic';
+
+        const translations = {
+            english: {
+                welcome_title: "Assalamu Alaikum! Welcome to Your Islamic AI Tools",
+                welcome_description: "Choose any tool below to get started. All tools support multiple languages and are powered by authentic Islamic scholarship combined with cutting-edge AI technology.",
+                language_indicator: "Language: 🇺🇸 English",
+                name_title: "Discover Beautiful Islamic Names",
+                name_description: "Generate meaningful Islamic names with detailed explanations of their Arabic origins and spiritual significance.",
+                gender: "Gender",
+                style: "Style",
+                options: "Additional Options",
+                male: "Male",
+                female: "Female",
+                unisex: "Unisex",
+                classic: "Classic",
+                modern: "Modern",
+                rare: "Rare",
+                pronunciation: "Include pronunciation",
+                arabic_script: "Arabic script",
+                generate: "Generate Islamic Names",
+                generated_title: "Generated Names for You",
+                generate_more: "Generate More Names"
+            },
+            arabic: {
+                welcome_title: "السلام عليكم! مرحباً بك في أدوات الذكاء الاصطناعي الإسلامية",
+                welcome_description: "اختر أي أداة أدناه للبدء. جميع الأدوات تدعم لغات متعددة ومدعومة بالمنح الدراسية الإسلامية الأصيلة مع أحدث تقنيات الذكاء الاصطناعي.",
+                language_indicator: "اللغة: 🇸🇦 العربية",
+                name_title: "اكتشف أسماء إسلامية جميلة",
+                name_description: "قم بإنشاء أسماء إسلامية ذات معاني مع شرح مفصل لأصولها العربية وأهميتها الروحية.",
+                gender: "الجنس",
+                style: "النمط",
+                options: "خيارات إضافية",
+                male: "ذكر",
+                female: "أنثى",
+                unisex: "مشترك",
+                classic: "كلاسيكي",
+                modern: "عصري",
+                rare: "نادر",
+                pronunciation: "تضمين النطق",
+                arabic_script: "الكتابة العربية",
+                generate: "إنشاء أسماء إسلامية",
+                generated_title: "الأسماء المُنشأة لك",
+                generate_more: "إنشاء المزيد من الأسماء"
+            },
+            turkish: {
+                welcome_title: "Esselamüaleyküm! İslami AI Araçlarınıza Hoş Geldiniz",
+                welcome_description: "Başlamak için aşağıdaki herhangi bir aracı seçin. Tüm araçlar çoklu dil desteği sunar ve otantik İslami bilimle birleşen son teknoloji AI ile desteklenir.",
+                language_indicator: "Dil: 🇹🇷 Türkçe",
+                name_title: "Güzel İslami İsimler Keşfedin",
+                name_description: "Arapça kökenleri ve ruhani önemi hakkında detaylı açıklamalarla anlamlı İslami isimler üretin.",
+                gender: "Cinsiyet",
+                style: "Stil",
+                options: "Ek Seçenekler",
+                male: "Erkek",
+                female: "Kız",
+                unisex: "Unisex",
+                classic: "Klasik",
+                modern: "Modern",
+                rare: "Nadir",
+                pronunciation: "Telaffuz dahil",
+                arabic_script: "Arap yazısı",
+                generate: "İslami İsimler Üret",
+                generated_title: "Sizin İçin Üretilen İsimler",
+                generate_more: "Daha Fazla İsim Üret"
+            },
+            indonesian: {
+                welcome_title: "Assalamu'alaikum! Selamat datang di Alat AI Islam Anda",
+                welcome_description: "Pilih alat mana pun di bawah ini untuk memulai. Semua alat mendukung berbagai bahasa dan didukung oleh beasiswa Islam otentik yang dikombinasikan dengan teknologi AI terdepan.",
+                language_indicator: "Bahasa: 🇮🇩 Bahasa Indonesia",
+                name_title: "Temukan Nama Islam yang Indah",
+                name_description: "Hasilkan nama-nama Islam yang bermakna dengan penjelasan rinci tentang asal-usul Arab dan makna spiritualnya.",
+                gender: "Jenis Kelamin",
+                style: "Gaya",
+                options: "Opsi Tambahan",
+                male: "Laki-laki",
+                female: "Perempuan",
+                unisex: "Unisex",
+                classic: "Klasik",
+                modern: "Modern",
+                rare: "Langka",
+                pronunciation: "Sertakan pengucapan",
+                arabic_script: "Tulisan Arab",
+                generate: "Buat Nama Islam",
+                generated_title: "Nama yang Dibuat untuk Anda",
+                generate_more: "Buat Lebih Banyak Nama"
+            }
+        };
+
+        const sampleNames = {
+            english: [
+                {
+                    name: "Ibrahim",
+                    arabic: "إبراهيم",
+                    meaning: "Father of nations",
+                    origin: "Arabic/Hebrew",
+                    pronunciation: "Ib-ra-heem",
+                    significance: "Named after Prophet Ibrahim (AS), known for his unwavering faith and submission to Allah. A name that represents strength, leadership, and devotion."
+                },
+                {
+                    name: "Aisha",
+                    arabic: "عائشة",
+                    meaning: "Living, lively",
+                    origin: "Arabic",
+                    pronunciation: "Aa-ee-sha",
+                    significance: "Name of Aisha (RA), Mother of the Believers and wife of Prophet Muhammad (SAW). Symbolizes wisdom, knowledge, and vitality."
+                }
+            ],
+            arabic: [
+                {
+                    name: "إبراهيم",
+                    arabic: "إبراهيم",
+                    meaning: "أبو الأمم",
+                    origin: "عربي/عبري",
+                    pronunciation: "إب-را-هيم",
+                    significance: "سُمي على اسم النبي إبراهيم عليه السلام، المعروف بإيمانه الثابت وتسليمه لله. اسم يمثل القوة والقيادة والتفاني."
+                },
+                {
+                    name: "عائشة",
+                    arabic: "عائشة",
+                    meaning: "الحية، النشطة",
+                    origin: "عربي",
+                    pronunciation: "عا-ئي-شة",
+                    significance: "اسم أم المؤمنين عائشة رضي الله عنها، زوجة النبي محمد صلى الله عليه وسلم. يرمز إلى الحكمة والمعرفة والحيوية."
+                }
+            ],
+            turkish: [
+                {
+                    name: "İbrahim",
+                    arabic: "إبراهيم",
+                    meaning: "Milletlerin babası",
+                    origin: "Arapça/İbranice",
+                    pronunciation: "İb-ra-him",
+                    significance: "Hz. İbrahim'in (AS) adından gelir, sarsılmaz imanı ve Allah'a teslimiyeti ile tanınır. Güç, liderlik ve bağlılığı temsil eden bir isimdir."
+                },
+                {
+                    name: "Ayşe",
+                    arabic: "عائشة",
+                    meaning: "Yaşayan, canlı",
+                    origin: "Arapça",
+                    pronunciation: "Ay-şe",
+                    significance: "Müminlerin annesi Hz. Aişe'nin (RA) adıdır, Hz. Muhammed'in (SAV) eşidir. Bilgelik, ilim ve canlılığı simgeler."
+                }
+            ],
+            indonesian: [
+                {
+                    name: "Ibrahim",
+                    arabic: "إبراهيم",
+                    meaning: "Bapa bangsa-bangsa",
+                    origin: "Arab/Ibrani",
+                    pronunciation: "Ib-ra-him",
+                    significance: "Dinamakan dari Nabi Ibrahim AS, yang dikenal karena imannya yang teguh dan ketundukan kepada Allah. Nama yang melambangkan kekuatan, kepemimpinan, dan pengabdian."
+                },
+                {
+                    name: "Aisyah",
+                    arabic: "عائشة",
+                    meaning: "Yang hidup, yang bersemangat",
+                    origin: "Arab",
+                    pronunciation: "A-i-syah",
+                    significance: "Nama Aisyah RA, Ummul Mukminin dan istri Nabi Muhammad SAW. Melambangkan kebijaksanaan, ilmu, dan vitalitas."
+                }
+            ]
+        };
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function showPaymentSuccess() {
+            showPage('payment-success');
+        }
+
+        function showDashboard() {
+            showPage('dashboard');
+        }
+
+        function showNameGenerator() {
+            showPage('name-generator');
+        }
+
+        function changeLanguage() {
+            const selector = document.getElementById('language-selector');
+            currentLanguage = selector.value;
+            updateLanguage();
+        }
+
+        function changeNameLanguage() {
+            const selector = document.getElementById('name-language-selector');
+            currentLanguage = selector.value;
+            updateNameLanguage();
+        }
+
+        function updateLanguage() {
+            const t = translations[currentLanguage];
+            if (!t) return;
+
+            document.getElementById('welcome-title').textContent = t.welcome_title;
+            document.getElementById('welcome-description').textContent = t.welcome_description;
+            document.getElementById('language-indicator').innerHTML = `<span class="w-2 h-2 bg-green-500 rounded-full mr-3 animate-pulse"></span>${t.language_indicator}`;
+        }
+
+        function updateNameLanguage() {
+            const t = translations[currentLanguage];
+            if (!t) return;
+
+            document.getElementById('name-title').textContent = t.name_title;
+            document.getElementById('name-description').textContent = t.name_description;
+            
+            const flags = {
+                english: '🇺🇸',
+                arabic: '🇸🇦',
+                turkish: '🇹🇷',
+                indonesian: '🇮🇩',
+                urdu: '🇵🇰'
+            };
+            
+            document.getElementById('name-language-indicator').innerHTML = `<span class="mr-2">${flags[currentLanguage]}</span><span class="font-medium">${t.language_indicator.split(' ')[1]}</span>`;
+            
+            // Update form labels
+            document.getElementById('gender-label').textContent = t.gender;
+            document.getElementById('style-label').textContent = t.style;
+            document.getElementById('options-label').textContent = t.options;
+            
+            // Update buttons
+            document.getElementById('male-text').textContent = t.male;
+            document.getElementById('female-text').textContent = t.female;
+            document.getElementById('unisex-text').textContent = t.unisex;
+            document.getElementById('classic-text').textContent = t.classic;
+            document.getElementById('modern-text').textContent = t.modern;
+            document.getElementById('rare-text').textContent = t.rare;
+            
+            // Update checkboxes
+            document.getElementById('pronunciation-text').textContent = t.pronunciation;
+            document.getElementById('arabic-script-text').textContent = t.arabic_script;
+            
+            // Update buttons
+            document.getElementById('generate-text').textContent = t.generate;
+            
+            if (document.getElementById('generated-names').style.display !== 'none') {
+                document.getElementById('generated-title').textContent = t.generated_title;
+                document.getElementById('generate-more-text').textContent = t.generate_more;
+            }
+        }
+
+        function selectGender(gender) {
+            selectedGender = gender;
+            document.querySelectorAll('.gender-btn').forEach(btn => {
+                btn.className = 'gender-btn py-3 px-4 rounded-xl font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200';
+            });
+            document.getElementById(gender + '-btn').className = 'gender-btn py-3 px-4 rounded-xl font-medium transition-colors bg-blue-600 text-white';
+        }
+
+        function selectStyle(style) {
+            selectedStyle = style;
+            document.querySelectorAll('.style-btn').forEach(btn => {
+                btn.className = 'style-btn py-3 px-4 rounded-xl font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200';
+            });
+            document.getElementById(style + '-btn').className = 'style-btn py-3 px-4 rounded-xl font-medium transition-colors bg-blue-600 text-white';
+        }
+
+        function generateNames() {
+            const t = translations[currentLanguage];
+            document.getElementById('generate-btn').innerHTML = `
+                <div class="flex items-center justify-center space-x-2">
+                    <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Generating...</span>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                const names = sampleNames[currentLanguage] || sampleNames.english;
+                displayNames(names);
+                document.getElementById('generate-btn').innerHTML = `✨ <span>${t.generate}</span>`;
+                document.getElementById('generated-names').style.display = 'block';
+                document.getElementById('generated-title').textContent = t.generated_title;
+                document.getElementById('generate-more-text').textContent = t.generate_more;
+            }, 2000);
+        }
+
+        function displayNames(names) {
+            const container = document.getElementById('names-container');
+            const isArabic = currentLanguage === 'arabic';
+            
+            container.innerHTML = names.map(name => `
+                <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 mb-8">
+                    <div class="flex flex-col lg:flex-row justify-between items-start mb-6">
+                        <div class="mb-4 lg:mb-0">
+                            <div class="flex items-center space-x-4 mb-2" ${isArabic ? 'dir="rtl"' : ''}>
+                                <h4 class="text-4xl font-bold text-blue-600">${name.name}</h4>
+                                ${name.arabic ? `<h4 class="text-3xl font-bold text-blue-600 arabic-text">${name.arabic}</h4>` : ''}
+                            </div>
+                            <p class="text-xl text-gray-700 font-medium" ${isArabic ? 'dir="rtl"' : ''}>${name.meaning}</p>
+                            <p class="text-sm text-gray-500" ${isArabic ? 'dir="rtl"' : ''}>
+                                ${currentLanguage === 'arabic' ? 'الأصل:' : 
+                                  currentLanguage === 'turkish' ? 'Köken:' : 
+                                  currentLanguage === 'indonesian' ? 'Asal:' : 'Origin:'} ${name.origin}
+                            </p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-gray-500 mb-1">
+                                ${currentLanguage === 'arabic' ? 'النطق' : 
+                                  currentLanguage === 'turkish' ? 'Telaffuz' : 
+                                  currentLanguage === 'indonesian' ? 'Pengucapan' : 'Pronunciation'}
+                            </p>
+                            <p class="text-lg font-medium text-gray-700">${name.pronunciation}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 rounded-2xl p-6">
+                        <h5 class="font-semibold text-blue-800 mb-3 flex items-center" ${isArabic ? 'dir="rtl"' : ''}>
+                            <span class="mr-2">✨</span>
+                            ${currentLanguage === 'arabic' ? 'الأهمية الروحية' : 
+                              currentLanguage === 'turkish' ? 'Ruhani Önem' : 
+                              currentLanguage === 'indonesian' ? 'Makna Spiritual' : 'Spiritual Significance'}
+                        </h5>
+                        <p class="text-blue-700 leading-relaxed" ${isArabic ? 'dir="rtl"' : ''}>
+                            ${name.significance}
+                        </p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            showPage('landing-page');
+        });
+    </script>
+
+</body>
+</html>
