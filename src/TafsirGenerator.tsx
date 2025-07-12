@@ -23,6 +23,8 @@ const TafsirGenerator = () => {
   const [tafsirResult, setTafsirResult] = useState<TafsirResult | null>(null)
   const [specificQuestion, setSpecificQuestion] = useState('')
   const [showAdvanced, setShowAdvanced] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null)
 
   const languages = [
     { code: 'english', name: 'English', flag: '🇺🇸' },
@@ -112,6 +114,53 @@ const TafsirGenerator = () => {
     } finally {
       setIsGenerating(false)
     }
+  }
+
+  // Voice playback functionality
+  const playTafsirAudio = async () => {
+    if (!tafsirResult || !selectedSurah || !verseRange) return
+
+    try {
+      setIsPlaying(true)
+      
+      // Get surah number for voice generation
+      const surahNumber = popularSurahs.find(s => s.name === selectedSurah)?.number || 1
+      const ayahNumber = parseInt(verseRange) || 1
+      
+      // Generate voice using browser TTS as fallback
+      const textToSpeak = `
+        Verse ${surahNumber}:${ayahNumber}.
+        ${tafsirResult.verseArabic}.
+        Translation: ${tafsirResult.verse}.
+        Tafsir As-Saadi Explanation: ${tafsirResult.explanation}
+      `
+      
+      // Use browser speech synthesis
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(textToSpeak)
+        utterance.lang = language === 'arabic' ? 'ar-SA' : 'en-US'
+        utterance.rate = 0.8
+        utterance.onend = () => setIsPlaying(false)
+        utterance.onerror = () => setIsPlaying(false)
+        
+        speechSynthesis.speak(utterance)
+        setCurrentAudio(null) // Browser TTS doesn't return audio object
+      }
+    } catch (error) {
+      console.error('Voice playback error:', error)
+      setIsPlaying(false)
+    }
+  }
+
+  const stopAudio = () => {
+    if (currentAudio) {
+      currentAudio.pause()
+      currentAudio.currentTime = 0
+    }
+    if ('speechSynthesis' in window) {
+      speechSynthesis.cancel()
+    }
+    setIsPlaying(false)
   }
 
   const selectedLanguage = languages.find(l => l.code === language)
@@ -409,6 +458,47 @@ const TafsirGenerator = () => {
               <p className="text-amber-700 leading-relaxed" dir={language === 'arabic' ? 'rtl' : 'ltr'}>
                 {tafsirResult.practicalApplication}
               </p>
+            </div>
+
+            {/* Voice Controls */}
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center space-x-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-4 border border-green-200">
+                <button
+                  onClick={isPlaying ? stopAudio : playTafsirAudio}
+                  disabled={!tafsirResult}
+                  className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                    isPlaying
+                      ? 'bg-red-500 text-white hover:bg-red-600'
+                      : 'bg-green-500 text-white hover:bg-green-600 disabled:opacity-50'
+                  }`}
+                >
+                  <span className="text-xl">
+                    {isPlaying ? '⏹️' : '🔊'}
+                  </span>
+                  <span>
+                    {isPlaying 
+                      ? (language === 'arabic' ? 'إيقاف الصوت' :
+                         language === 'turkish' ? 'Sesi Durdur' :
+                         language === 'indonesian' ? 'Hentikan Suara' :
+                         'Stop Audio')
+                      : (language === 'arabic' ? 'استمع للتفسير' :
+                         language === 'turkish' ? 'Tefsiri Dinle' :
+                         language === 'indonesian' ? 'Dengarkan Tafsir' :
+                         'Listen to Tafsir')
+                    }
+                  </span>
+                </button>
+                
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                  <span>
+                    {language === 'arabic' ? 'متاح بالصوت' :
+                     language === 'turkish' ? 'Sesli Mevcut' :
+                     language === 'indonesian' ? 'Audio Tersedia' :
+                     'Voice Available'}
+                  </span>
+                </div>
+              </div>
             </div>
 
             {/* Action Buttons */}

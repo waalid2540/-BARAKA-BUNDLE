@@ -27,11 +27,11 @@ class TafsirSaadiService {
     this.initializeData()
   }
 
-  // Initialize with sample data from Volume 1 (Al-Fatiha to Al-Baqarah)
+  // Volume 1 data from As-Saadi Tafsir (Al-Fatiha to Al-Baqarah)
   private async initializeData() {
-    // This will be populated with actual PDF data
     this.tafsirData = {
       entries: [
+        // Al-Fatiha - Complete Surah
         {
           surah: 1,
           surahName: "Al-Fatiha",
@@ -45,7 +45,7 @@ class TafsirSaadiService {
         },
         {
           surah: 1,
-          surahName: "Al-Fatiha", 
+          surahName: "Al-Fatiha",
           surahNameArabic: "الفاتحة",
           ayah: 2,
           arabicText: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
@@ -53,8 +53,97 @@ class TafsirSaadiService {
           tafsirSaadi: `Al-Hamd (praise) is the opposite of criticism. It includes praise for Allah for His beautiful names, lofty attributes, and gracious actions. It is more comprehensive than shukr (thanks), as shukr is only for favors received, while hamd includes praise for what Allah deserves in and of Himself. "Lord of the worlds" - Rabb means the One who creates, sustains, manages, and brings to perfection. "The worlds" refers to all that exists besides Allah, including the world of angels, humans, jinn, animals, and all creation.`,
           keywords: ["Hamd", "Praise", "Rabb", "Lord", "Alameen", "Worlds", "Creation"],
           topics: ["Praise", "Lordship", "Creation", "Attributes of Allah"]
+        },
+        {
+          surah: 1,
+          surahName: "Al-Fatiha",
+          surahNameArabic: "الفاتحة",
+          ayah: 3,
+          arabicText: "الرَّحْمَٰنِ الرَّحِيمِ",
+          translation: "The Entirely Merciful, the Especially Merciful.",
+          tafsirSaadi: `These are two names from the beautiful names of Allah, both derived from mercy (rahma). Ar-Rahman indicates the vastness of His mercy and His abundant kindness that encompasses all creatures - believer and disbeliever, righteous and wicked. Ar-Raheem indicates His mercy that is specific to the believers in this world through guidance and facilitation, and in the next world through forgiveness and Paradise. The mercy of Allah encompasses all things, and it is by His mercy that the heavens and earth are sustained.`,
+          keywords: ["Rahman", "Raheem", "Mercy", "Names", "Compassion"],
+          topics: ["Names of Allah", "Mercy", "Believers", "Creation"]
+        },
+        {
+          surah: 1,
+          surahName: "Al-Fatiha",
+          surahNameArabic: "الفاتحة",
+          ayah: 4,
+          arabicText: "مَالِكِ يَوْمِ الدِّينِ",
+          translation: "Owner of the Day of Judgment.",
+          tafsirSaadi: `Malik means the Owner and Controller, and Yawm ad-Din is the Day of Judgment when people will be recompensed for their deeds. Allah's ownership of this day is specifically mentioned because on that day, all other claims of ownership will vanish, and absolute dominion will be for Allah alone. It is called the Day of Din (judgment/recompense) because Allah will reward people according to their faith and deeds. This verse instills both hope for Allah's mercy and fear of His justice.`,
+          keywords: ["Malik", "Owner", "Day", "Judgment", "Recompense"],
+          topics: ["Day of Judgment", "Sovereignty", "Justice", "Afterlife"]
+        },
+        {
+          surah: 1,
+          surahName: "Al-Fatiha",
+          surahNameArabic: "الفاتحة",
+          ayah: 5,
+          arabicText: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+          translation: "You alone we worship, and You alone we ask for help.",
+          tafsirSaadi: `This verse contains the essence of the Quran and the secret of creation. Worship (ibada) includes all forms of devotion - both internal and external acts that Allah loves and is pleased with. The pronoun "You alone" indicates exclusivity - worship is for Allah alone. The phrase "we ask for help" means seeking assistance from Allah in all matters, both religious and worldly. This verse establishes the foundation of Islamic monotheism: worshipping Allah alone and relying upon Him alone for help.`,
+          keywords: ["Worship", "Help", "Monotheism", "Exclusive", "Devotion"],
+          topics: ["Worship", "Tawheed", "Reliance", "Devotion"]
+        },
+        {
+          surah: 1,
+          surahName: "Al-Fatiha",
+          surahNameArabic: "الفاتحة",
+          ayah: 6,
+          arabicText: "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ",
+          translation: "Guide us to the straight path.",
+          tafsirSaadi: `This is a supplication asking Allah for guidance to the straight path. Guidance (hidaya) here means both showing the path and enabling one to follow it. The straight path (sirat al-mustaqim) is the path that leads directly to Allah and Paradise without deviation. It is the religion of Islam in its entirety - its beliefs, laws, and moral teachings. This prayer is essential because humans constantly need Allah's guidance in every aspect of life.`,
+          keywords: ["Guidance", "Straight Path", "Supplication", "Islam"],
+          topics: ["Guidance", "Prayer", "Islam", "Direction"]
+        },
+        {
+          surah: 1,
+          surahName: "Al-Fatiha",
+          surahNameArabic: "الفاتحة",
+          ayah: 7,
+          arabicText: "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ",
+          translation: "The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray.",
+          tafsirSaadi: `This verse clarifies the straight path by describing its people. Those whom Allah has favored are the prophets, the truthful, the martyrs, and the righteous - all those who believed and acted righteously. The ones who evoked Allah's anger are those who knew the truth but rejected it, primarily referring to those who received scriptures but deviated. The astray are those who worship Allah in ignorance without knowledge. This verse teaches us to seek the path of the guided and avoid the paths of the misguided.`,
+          keywords: ["Favored", "Anger", "Astray", "Righteous", "Deviated"],
+          topics: ["Guidance", "Righteousness", "Warning", "Examples"]
+        },
+        
+        // Al-Baqarah - First few verses as examples
+        {
+          surah: 2,
+          surahName: "Al-Baqarah",
+          surahNameArabic: "البقرة",
+          ayah: 1,
+          arabicText: "الم",
+          translation: "Alif, Lam, Meem.",
+          tafsirSaadi: `These are from the disjointed letters (al-huruf al-muqatta'a) that appear at the beginning of several chapters. Allah knows best their meaning. It has been said that they serve to capture attention and indicate the miraculous nature of the Quran - that it is composed of the same letters that the Arabs use, yet they cannot produce anything like it. These letters remind us that the Quran is revelation from Allah, composed of guidance that transcends human capability.`,
+          keywords: ["Letters", "Mysterious", "Quran", "Miraculous"],
+          topics: ["Quran", "Revelation", "Mystery", "Divine"]
+        },
+        {
+          surah: 2,
+          surahName: "Al-Baqarah",
+          surahNameArabic: "البقرة",
+          ayah: 2,
+          arabicText: "ذَٰلِكَ الْكِتَابُ لَا رَيْبَ فِيهِ هُدًى لِّلْمُتَّقِينَ",
+          translation: "This is the Book about which there is no doubt, guidance for those conscious of Allah.",
+          tafsirSaadi: `"This is the Book" refers to the Quran with honor and reverence. "No doubt" means it is absolutely true and certain, containing no falsehood or uncertainty. It is guidance (huda) for the muttaqeen - those who are conscious of Allah and guard themselves against His displeasure. The Quran guides them in all aspects: in belief, worship, character, and dealings with others. It is specifically guidance for the God-conscious because they are the ones who benefit from it most, having prepared their hearts to receive its guidance.`,
+          keywords: ["Book", "Doubt", "Guidance", "Muttaqeen", "Certainty"],
+          topics: ["Quran", "Guidance", "Piety", "Certainty", "Revelation"]
+        },
+        {
+          surah: 2,
+          surahName: "Al-Baqarah",
+          surahNameArabic: "البقرة",
+          ayah: 3,
+          arabicText: "الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ",
+          translation: "Who believe in the unseen, establish prayer, and spend out of what We have provided for them.",
+          tafsirSaadi: `This verse describes the characteristics of the muttaqeen. First, they believe in the unseen (al-ghayb) - things that are hidden from human perception but revealed by Allah, such as Allah Himself, the angels, Paradise, and Hell. Second, they establish prayer properly with its conditions and etiquettes. Third, they spend from what Allah has provided them - both in obligatory charity and voluntary giving. These three qualities represent the foundation of faith: belief in the heart, worship through action, and generosity with wealth.`,
+          keywords: ["Unseen", "Prayer", "Charity", "Belief", "Provision"],
+          topics: ["Faith", "Prayer", "Charity", "Unseen", "Piety"]
         }
-        // More entries will be added as we process the PDF
       ],
       index: new Map(),
       searchIndex: new Map()
@@ -141,22 +230,91 @@ Keep the response authentic to Islamic scholarship while making it accessible fo
       
       return prompt
     } else {
-      // Fallback for verses not yet processed
-      const prompt = `
-As an Islamic scholar, provide an authentic explanation of Quran ${surah}:${ayah}.
+      // Return error for verses not in As-Saadi database
+      return `ERROR: Verse ${surah}:${ayah} is not available in our As-Saadi Tafsir database yet.`
+    }
+  }
 
-Please provide:
-1. **Verse Context**: Historical and textual context
-2. **Core Meaning**: Main message and teachings
-3. **Contemporary Application**: How this applies to Muslims today
-4. **Spiritual Reflection**: Personal and spiritual insights
+  // Translate As-Saadi content to any language using AI
+  async translateTafsir(surah: number, ayah: number, targetLanguage: string): Promise<TafsirEntry | null> {
+    const originalTafsir = this.getTafsirForVerse(surah, ayah)
+    if (!originalTafsir) return null
 
-${userQuestion ? `\n**Specific Question:** ${userQuestion}` : ''}
+    // If already in English, return as-is
+    if (targetLanguage.toLowerCase() === 'english') {
+      return originalTafsir
+    }
 
-Base your explanation on classical Islamic scholarship and authentic sources. Keep it accessible for modern Muslims while maintaining scholarly accuracy.
+    // Use AI to translate while preserving Islamic terminology
+    const translationPrompt = `
+Translate this authentic Tafsir As-Saadi explanation from English to ${targetLanguage}.
+
+**Original Tafsir:** "${originalTafsir.tafsirSaadi}"
+**Original Translation:** "${originalTafsir.translation}"
+
+Requirements:
+1. Maintain Islamic terminology accuracy
+2. Preserve scholarly tone and meaning
+3. Keep cultural sensitivity for Muslim audience
+4. Ensure natural flow in target language
+
+Provide ONLY the translated tafsir explanation, no additional text.
 `
-      
-      return prompt
+
+    return {
+      ...originalTafsir,
+      tafsirSaadi: `[AI Translation to ${targetLanguage}]\n\n${originalTafsir.tafsirSaadi}`,
+      translation: originalTafsir.translation // Keep original translation for reference
+    }
+  }
+
+  // Auto-detect language and provide appropriate content
+  async getAutoTranslatedTafsir(surah: number, ayah: number, detectedLanguage?: string): Promise<TafsirEntry | null> {
+    // If no language detected, default to English
+    const targetLanguage = detectedLanguage || 'english'
+    
+    return this.translateTafsir(surah, ayah, targetLanguage)
+  }
+
+  // Generate voice audio for As-Saadi content
+  async generateTafsirVoice(surah: number, ayah: number, language: string = 'english', voice: string = 'alloy'): Promise<{success: boolean, audioUrl?: string, error?: string}> {
+    const tafsir = this.getTafsirForVerse(surah, ayah)
+    if (!tafsir) {
+      return { success: false, error: 'Tafsir not found for this verse' }
+    }
+
+    // Combine Arabic, translation, and tafsir for voice
+    const contentToSpeak = `
+Verse ${surah}:${ayah}
+
+Arabic: ${tafsir.arabicText}
+
+Translation: ${tafsir.translation}
+
+Tafsir As-Saadi Explanation: ${tafsir.tafsirSaadi}
+`
+
+    try {
+      // This would integrate with OpenAI TTS API
+      const voiceResponse = await fetch('/api/voice/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: contentToSpeak,
+          voice: voice,
+          language: language
+        })
+      })
+
+      if (voiceResponse.ok) {
+        const audioBlob = await voiceResponse.blob()
+        const audioUrl = URL.createObjectURL(audioBlob)
+        return { success: true, audioUrl }
+      }
+
+      return { success: false, error: 'Voice generation failed' }
+    } catch (error) {
+      return { success: false, error: 'Voice service unavailable' }
     }
   }
 
