@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { tafsirSaadiService } from './services/tafsirSaadiProcessor'
-import { generateTafsirExplanation } from './services/aiService'
 
 interface ChatMessage {
   id: string
   type: 'user' | 'bot'
   content: string
   timestamp: Date
-  verse?: string
-  isTyping?: boolean
 }
 
 const AITafsirChatbot = () => {
@@ -22,13 +18,7 @@ const AITafsirChatbot = () => {
     { code: 'english', name: 'English', flag: '🇺🇸' },
     { code: 'arabic', name: 'العربية', flag: '🇸🇦' },
     { code: 'turkish', name: 'Türkçe', flag: '🇹🇷' },
-    { code: 'indonesian', name: 'Bahasa Indonesia', flag: '🇮🇩' },
-    { code: 'urdu', name: 'اردو', flag: '🇵🇰' },
-    { code: 'persian', name: 'فارسی', flag: '🇮🇷' },
-    { code: 'bengali', name: 'বাংলা', flag: '🇧🇩' },
-    { code: 'malay', name: 'Bahasa Melayu', flag: '🇲🇾' },
-    { code: 'french', name: 'Français', flag: '🇫🇷' },
-    { code: 'german', name: 'Deutsch', flag: '🇩🇪' }
+    { code: 'indonesian', name: 'Bahasa Indonesia', flag: '🇮🇩' }
   ]
 
   // Welcome message
@@ -37,12 +27,12 @@ const AITafsirChatbot = () => {
       id: '1',
       type: 'bot',
       content: language === 'arabic' ?
-        'السلام عليكم! أنا مساعد تفسير القرآن بالذكاء الاصطناعي. أعتمد على تفسير الشيخ عبد الرحمن السعدي. اسألني عن أي آية من القرآن الكريم.' :
+        'السلام عليكم! أنا مساعد تفسير القرآن بالذكاء الاصطناعي المدعوم بتفسير السعدي. اسألني عن أي آية!' :
         language === 'turkish' ?
-        'Selamün aleyküm! Ben As-Saadi Tefsiri tabanlı AI Tefsir asistanıyım. Kuran ayetleri hakkında bana soru sorabilirsiniz.' :
+        'Selamün aleyküm! Ben As-Saadi Tefsiri destekli AI asistanıyım. Kuran ayetleri hakkında soru sorabilirsiniz!' :
         language === 'indonesian' ?
-        'Assalamu\'alaikum! Saya asisten AI Tafsir berdasarkan Tafsir As-Saadi. Tanyakan kepada saya tentang ayat Al-Quran apapun.' :
-        'Assalamu Alaikum! I\'m your AI Tafsir assistant based on Tafsir As-Saadi. Ask me about any verse from the Quran.',
+        'Assalamu\'alaikum! Saya asisten AI Tafsir berdasarkan Tafsir As-Saadi. Tanyakan tentang ayat Al-Quran!' :
+        'Assalamu Alaikum! I\'m your AI Tafsir assistant powered by Tafsir As-Saadi. Ask me about any Quranic verse!',
       timestamp: new Date()
     }
     setMessages([welcomeMessage])
@@ -53,35 +43,7 @@ const AITafsirChatbot = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  // Parse user message to find verse references
-  const parseVerseReference = (message: string): { surah: number, ayah: number } | null => {
-    // Look for patterns like "1:1", "Al-Fatiha 1", "Baqarah 2:5", etc.
-    const patterns = [
-      /(\d+):(\d+)/,                          // "1:1"
-      /al-fatiha\s+(\d+)/i,                   // "Al-Fatiha 1"
-      /fatiha\s+(\d+)/i,                      // "Fatiha 1"
-      /al-baqarah\s+(\d+)/i,                  // "Al-Baqarah 1"
-      /baqarah\s+(\d+)/i,                     // "Baqarah 1"
-      /الفاتحة\s+(\d+)/,                       // "الفاتحة 1"
-      /البقرة\s+(\d+)/,                        // "البقرة 1"
-    ]
-
-    for (const pattern of patterns) {
-      const match = message.match(pattern)
-      if (match) {
-        if (pattern.source.includes(':')) {
-          return { surah: parseInt(match[1]), ayah: parseInt(match[2]) }
-        } else if (pattern.source.includes('fatiha') || pattern.source.includes('الفاتحة')) {
-          return { surah: 1, ayah: parseInt(match[1]) }
-        } else if (pattern.source.includes('baqarah') || pattern.source.includes('البقرة')) {
-          return { surah: 2, ayah: parseInt(match[1]) }
-        }
-      }
-    }
-    return null
-  }
-
-  // Send message to AI Tafsir
+  // Send message
   const sendMessage = async () => {
     if (!inputMessage.trim()) return
 
@@ -96,92 +58,23 @@ const AITafsirChatbot = () => {
     setInputMessage('')
     setIsLoading(true)
 
-    try {
-      // Parse for verse references
-      const verseRef = parseVerseReference(inputMessage)
-      let botResponse = ''
-      let verseInfo = ''
-
-      if (verseRef) {
-        // User asked about specific verse
-        const tafsir = tafsirSaadiService.getTafsirForVerse(verseRef.surah, verseRef.ayah)
-        
-        if (tafsir) {
-          verseInfo = `**${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}**\n\n**Arabic:** ${tafsir.arabicText}\n\n**Translation:** ${tafsir.translation}\n\n`
-          
-          // Get AI response based on As-Saadi + user question
-          const aiPrompt = `You are an AI Tafsir assistant. A user asked: "${inputMessage}"
-
-This relates to ${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}.
-
-**Authentic As-Saadi Tafsir:** "${tafsir.tafsirSaadi}"
-
-Respond conversationally in ${language}, including:
-1. The As-Saadi explanation (as the foundation)
-2. How this relates to the user's question
-3. Contemporary applications if relevant
-
-Be natural and helpful, like a knowledgeable Islamic teacher.`
-
-          const aiResponse = await generateTafsirExplanation(aiPrompt, language, 'detailed')
-          botResponse = aiResponse.success ? aiResponse.data?.explanation || tafsir.tafsirSaadi : tafsir.tafsirSaadi
-        } else {
-          botResponse = language === 'arabic' ?
-            `عذراً، الآية ${verseRef.surah}:${verseRef.ayah} غير متوفرة حالياً في قاعدة بيانات تفسير السعدي. المتوفر حالياً: الفاتحة 1-7، البقرة 1-3` :
-            language === 'turkish' ?
-            `Üzgünüm, ${verseRef.surah}:${verseRef.ayah} ayeti As-Saadi veritabanında mevcut değil. Mevcut: Fatiha 1-7, Bakara 1-3` :
-            language === 'indonesian' ?
-            `Maaf, ayat ${verseRef.surah}:${verseRef.ayah} belum tersedia dalam database As-Saadi. Tersedia: Al-Fatiha 1-7, Al-Baqarah 1-3` :
-            `Sorry, verse ${verseRef.surah}:${verseRef.ayah} is not available in our As-Saadi database yet. Available: Al-Fatiha 1-7, Al-Baqarah 1-3`
-        }
-      } else {
-        // General Islamic question - search As-Saadi database
-        const searchResults = tafsirSaadiService.searchTafsir(inputMessage)
-        
-        if (searchResults.length > 0) {
-          const relevantTafsir = searchResults[0]
-          verseInfo = `**${relevantTafsir.surahName} ${relevantTafsir.surah}:${relevantTafsir.ayah}**\n\n**Arabic:** ${relevantTafsir.arabicText}\n\n**Translation:** ${relevantTafsir.translation}\n\n`
-          
-          const aiPrompt = `User asked: "${inputMessage}"
-
-Based on this relevant As-Saadi Tafsir: "${relevantTafsir.tafsirSaadi}"
-
-Respond conversationally in ${language}, explaining how this As-Saadi commentary relates to their question.`
-
-          const aiResponse = await generateTafsirExplanation(aiPrompt, language, 'detailed')
-          botResponse = aiResponse.success ? aiResponse.data?.explanation || relevantTafsir.tafsirSaadi : relevantTafsir.tafsirSaadi
-        } else {
-          botResponse = language === 'arabic' ?
-            'يمكنك سؤالي عن آيات محددة من الفاتحة (1-7) والبقرة (1-3). مثال: "اشرح لي البسملة" أو "ما معنى الفاتحة 1"' :
-            language === 'turkish' ?
-            'Fatiha (1-7) ve Bakara (1-3) ayetleri hakkında soru sorabilirsiniz. Örnek: "Bismillah\'ı açıkla" veya "Fatiha 1 ne anlama gelir"' :
-            language === 'indonesian' ?
-            'Anda bisa bertanya tentang ayat Al-Fatiha (1-7) dan Al-Baqarah (1-3). Contoh: "Jelaskan Bismillah" atau "Apa arti Al-Fatiha 1"' :
-            'You can ask me about specific verses from Al-Fatiha (1-7) and Al-Baqarah (1-3). Example: "Explain Bismillah" or "What does Al-Fatiha 1 mean?"'
-        }
-      }
-
+    // Simple response for now - will integrate with As-Saadi later
+    setTimeout(() => {
       const botMessage: ChatMessage = {
-        id: Date.now().toString(),
+        id: (Date.now() + 1).toString(),
         type: 'bot',
-        content: verseInfo + botResponse,
-        timestamp: new Date(),
-        verse: verseRef ? `${verseRef.surah}:${verseRef.ayah}` : undefined
-      }
-
-      setMessages(prev => [...prev, botMessage])
-    } catch (error) {
-      console.error('Chat error:', error)
-      const errorMessage: ChatMessage = {
-        id: Date.now().toString(),
-        type: 'bot',
-        content: language === 'arabic' ? 'عذراً، حدث خطأ. حاول مرة أخرى.' : 'Sorry, there was an error. Please try again.',
+        content: language === 'arabic' ?
+          'شكراً لسؤالك! أنا أعمل حالياً على تطوير الاتصال مع قاعدة بيانات تفسير السعدي. سيتم تحديث هذه الميزة قريباً.' :
+          language === 'turkish' ?
+          'Sorunuz için teşekkürler! As-Saadi veritabanı bağlantısı üzerinde çalışıyorum. Bu özellik yakında güncellenecek.' :
+          language === 'indonesian' ?
+          'Terima kasih atas pertanyaannya! Saya sedang mengembangkan koneksi dengan database As-Saadi. Fitur ini akan segera diperbarui.' :
+          'Thank you for your question! I\'m currently working on connecting with the As-Saadi database. This feature will be updated soon.',
         timestamp: new Date()
       }
-      setMessages(prev => [...prev, errorMessage])
-    } finally {
+      setMessages(prev => [...prev, botMessage])
       setIsLoading(false)
-    }
+    }, 2000)
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -190,8 +83,6 @@ Respond conversationally in ${language}, explaining how this As-Saadi commentary
       sendMessage()
     }
   }
-
-  const selectedLanguage = languages.find(l => l.code === language)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50">
@@ -241,6 +132,19 @@ Respond conversationally in ${language}, explaining how this As-Saadi commentary
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white rounded-3xl shadow-xl border border-gray-100 h-[600px] flex flex-col">
           
+          {/* Status Banner */}
+          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-b border-yellow-200 p-4 rounded-t-3xl">
+            <div className="flex items-center space-x-2">
+              <span className="text-yellow-600">⚠️</span>
+              <span className="text-sm text-yellow-800 font-medium">
+                {language === 'arabic' ? 'قيد التطوير - سيتم الاتصال بقاعدة بيانات تفسير السعدي قريباً' :
+                 language === 'turkish' ? 'Geliştirme aşamasında - As-Saadi veritabanı bağlantısı yakında' :
+                 language === 'indonesian' ? 'Dalam pengembangan - koneksi database As-Saadi akan segera tersedia' :
+                 'Under Development - As-Saadi database connection coming soon'}
+              </span>
+            </div>
+          </div>
+          
           {/* Chat Messages */}
           <div className="flex-1 p-6 overflow-y-auto">
             {messages.map((message) => (
@@ -257,11 +161,6 @@ Respond conversationally in ${language}, explaining how this As-Saadi commentary
                     <div className="flex items-center space-x-2 mb-2">
                       <span className="text-green-600">🤖</span>
                       <span className="text-sm font-medium text-green-700">AI Tafsir Assistant</span>
-                      {message.verse && (
-                        <span className="text-xs bg-green-200 text-green-800 px-2 py-1 rounded-full">
-                          {message.verse}
-                        </span>
-                      )}
                     </div>
                   )}
                   <div className="whitespace-pre-wrap leading-relaxed" dir={language === 'arabic' ? 'rtl' : 'ltr'}>
@@ -286,10 +185,10 @@ Respond conversationally in ${language}, explaining how this As-Saadi commentary
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
                     <span className="text-gray-500 text-sm ml-2">
-                      {language === 'arabic' ? 'جاري البحث في تفسير السعدي...' :
-                       language === 'turkish' ? 'As-Saadi tefsirinde aranıyor...' :
-                       language === 'indonesian' ? 'Mencari dalam Tafsir As-Saadi...' :
-                       'Searching Tafsir As-Saadi...'}
+                      {language === 'arabic' ? 'جاري الإعداد...' :
+                       language === 'turkish' ? 'Hazırlanıyor...' :
+                       language === 'indonesian' ? 'Sedang menyiapkan...' :
+                       'Preparing response...'}
                     </span>
                   </div>
                 </div>
@@ -306,10 +205,10 @@ Respond conversationally in ${language}, explaining how this As-Saadi commentary
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder={language === 'arabic' ? 'اسأل عن أي آية... مثال: "اشرح البسملة" أو "الفاتحة 1"' :
-                           language === 'turkish' ? 'Herhangi bir ayet hakkında sorun... Örnek: "Bismillah\'ı açıkla"' :
-                           language === 'indonesian' ? 'Tanya tentang ayat apapun... Contoh: "Jelaskan Bismillah"' :
-                           'Ask about any verse... Example: "Explain Bismillah" or "Al-Fatiha 1"'}
+                placeholder={language === 'arabic' ? 'اكتب سؤالك هنا...' :
+                           language === 'turkish' ? 'Sorunuzu buraya yazın...' :
+                           language === 'indonesian' ? 'Tulis pertanyaan Anda di sini...' :
+                           'Type your question here...'}
                 className="flex-1 border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 disabled={isLoading}
                 dir={language === 'arabic' ? 'rtl' : 'ltr'}
@@ -332,16 +231,16 @@ Respond conversationally in ${language}, explaining how this As-Saadi commentary
                 {language === 'arabic' ? 'اشرح البسملة' : 'Explain Bismillah'}
               </button>
               <button 
-                onClick={() => setInputMessage('Al-Fatiha 2')}
+                onClick={() => setInputMessage('Al-Fatiha 1')}
                 className="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-full hover:bg-blue-200 transition-colors"
               >
-                {language === 'arabic' ? 'الفاتحة 2' : 'Al-Fatiha 2'}
+                {language === 'arabic' ? 'الفاتحة 1' : 'Al-Fatiha 1'}
               </button>
               <button 
-                onClick={() => setInputMessage('What does Alhamdulillahi rabbil alameen mean?')}
+                onClick={() => setInputMessage('What is Islamic guidance?')}
                 className="text-sm bg-purple-100 text-purple-700 px-3 py-1 rounded-full hover:bg-purple-200 transition-colors"
               >
-                {language === 'arabic' ? 'معنى الحمد لله رب العالمين' : 'Meaning of Alhamdulillah'}
+                {language === 'arabic' ? 'ما هي الهداية الإسلامية؟' : 'Islamic Guidance?'}
               </button>
             </div>
           </div>
