@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { tafsirSaadiService } from './services/tafsirSaadiProcessor'
+import { generateTafsirExplanation } from './services/aiService'
 
 interface ChatMessage {
   id: string
   type: 'user' | 'bot'
   content: string
   timestamp: Date
+  verse?: string
+  source?: string
 }
 
 const AITafsirChatbot = () => {
@@ -43,7 +47,40 @@ const AITafsirChatbot = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  // Send message
+  // Parse user message to find verse references
+  const parseVerseReference = (message: string): { surah: number, ayah: number } | null => {
+    // Look for patterns like "1:1", "Al-Fatiha 1", "Baqarah 2:5", "Bismillah", etc.
+    const patterns = [
+      /(\d+):(\d+)/,                          // "1:1"
+      /al-fatiha\s+(\d+)/i,                   // "Al-Fatiha 1"
+      /fatiha\s+(\d+)/i,                      // "Fatiha 1"
+      /al-baqarah\s+(\d+)/i,                  // "Al-Baqarah 1"
+      /baqarah\s+(\d+)/i,                     // "Baqarah 1"
+      /bismillah/i,                           // "Bismillah" -> Al-Fatiha 1
+      /basmalah/i,                            // "Basmalah" -> Al-Fatiha 1
+      /الفاتحة\s+(\d+)/,                       // "الفاتحة 1"
+      /البقرة\s+(\d+)/,                        // "البقرة 1"
+      /بسم\s*الله/,                            // "بسم الله" -> Al-Fatiha 1
+    ]
+
+    for (const pattern of patterns) {
+      const match = message.match(pattern)
+      if (match) {
+        if (pattern.source.includes(':')) {
+          return { surah: parseInt(match[1]), ayah: parseInt(match[2]) }
+        } else if (pattern.source.includes('fatiha') || pattern.source.includes('الفاتحة')) {
+          return { surah: 1, ayah: parseInt(match[1]) }
+        } else if (pattern.source.includes('baqarah') || pattern.source.includes('البقرة')) {
+          return { surah: 2, ayah: parseInt(match[1]) }
+        } else if (pattern.source.includes('bismillah') || pattern.source.includes('basmalah') || pattern.source.includes('بسم')) {
+          return { surah: 1, ayah: 1 } // Bismillah = Al-Fatiha 1:1
+        }
+      }
+    }
+    return null
+  }
+
+  // Send message with As-Saadi + AI integration
   const sendMessage = async () => {
     if (!inputMessage.trim()) return
 
@@ -58,23 +95,110 @@ const AITafsirChatbot = () => {
     setInputMessage('')
     setIsLoading(true)
 
-    // Simple response for now - will integrate with As-Saadi later
-    setTimeout(() => {
-      const botMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        type: 'bot',
-        content: language === 'arabic' ?
-          'شكراً لسؤالك! أنا أعمل حالياً على تطوير الاتصال مع قاعدة بيانات تفسير السعدي. سيتم تحديث هذه الميزة قريباً.' :
-          language === 'turkish' ?
-          'Sorunuz için teşekkürler! As-Saadi veritabanı bağlantısı üzerinde çalışıyorum. Bu özellik yakında güncellenecek.' :
-          language === 'indonesian' ?
-          'Terima kasih atas pertanyaannya! Saya sedang mengembangkan koneksi dengan database As-Saadi. Fitur ini akan segera diperbarui.' :
-          'Thank you for your question! I\'m currently working on connecting with the As-Saadi database. This feature will be updated soon.',
-        timestamp: new Date()
+    try {
+      // Parse for verse references
+      const verseRef = parseVerseReference(inputMessage)
+      let botResponse = ''
+      let verseInfo = ''
+      let source = 'AI Assistant'
+
+      if (verseRef) {
+        // User asked about specific verse - check As-Saadi database
+        const tafsir = tafsirSaadiService.getTafsirForVerse(verseRef.surah, verseRef.ayah)
+        
+        if (tafsir) {
+          // We have authentic As-Saadi explanation!
+          source = 'Tafsir As-Saadi + AI'
+          verseInfo = `**${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}**\n\n**Arabic:** ${tafsir.arabicText}\n\n**Translation:** ${tafsir.translation}\n\n**Tafsir As-Saadi:**\n${tafsir.tafsirSaadi}\n\n`
+          
+          // Get AI enhancement based on As-Saadi + user question
+          const aiPrompt = `You are an AI Islamic scholar. A user asked: "${inputMessage}"
+
+This relates to ${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}.
+
+**Authentic As-Saadi Tafsir:** "${tafsir.tafsirSaadi}"
+
+Based ONLY on the As-Saadi explanation above, provide a conversational response in ${language} that:
+1. Acknowledges their question
+2. Explains how As-Saadi's commentary answers their question  
+3. Adds contemporary applications based on As-Saadi's insights
+4. Keeps it conversational and helpful
+
+Do not add interpretations beyond what As-Saadi provides. Use his explanation as the foundation.`
+
+          const aiResponse = await generateTafsirExplanation(aiPrompt, language, 'detailed')
+          
+          if (aiResponse.success && aiResponse.data?.explanation) {
+            botResponse = `**AI Contemporary Application:**\n${aiResponse.data.explanation}`
+          } else {
+            botResponse = `**Contemporary Application:**\nBased on As-Saadi's explanation, this verse teaches us important principles that we can apply in our daily lives as Muslims.`
+          }
+        } else {
+          // Verse not in As-Saadi database
+          botResponse = language === 'arabic' ?
+            `عذراً، الآية ${verseRef.surah}:${verseRef.ayah} غير متوفرة حالياً في قاعدة بيانات تفسير السعدي.\n\n**المتوفر حالياً:**\n• الفاتحة 1-7 (جميع الآيات)\n• البقرة 1-3 (أول 3 آيات)\n\nجرب: "اشرح البسملة" أو "الفاتحة 2"` :
+            language === 'turkish' ?
+            `Üzgünüm, ${verseRef.surah}:${verseRef.ayah} ayeti As-Saadi veritabanında mevcut değil.\n\n**Mevcut:**\n• Fatiha 1-7 (tüm ayetler)\n• Bakara 1-3 (ilk 3 ayet)\n\nDeneyin: "Bismillah'ı açıkla" veya "Fatiha 2"` :
+            language === 'indonesian' ?
+            `Maaf, ayat ${verseRef.surah}:${verseRef.ayah} belum tersedia dalam database As-Saadi.\n\n**Tersedia:**\n• Al-Fatiha 1-7 (semua ayat)\n• Al-Baqarah 1-3 (3 ayat pertama)\n\nCoba: "Jelaskan Bismillah" atau "Al-Fatiha 2"` :
+            `Sorry, verse ${verseRef.surah}:${verseRef.ayah} is not available in our As-Saadi database yet.\n\n**Available:**\n• Al-Fatiha 1-7 (all verses)\n• Al-Baqarah 1-3 (first 3 verses)\n\nTry: "Explain Bismillah" or "Al-Fatiha 2"`
+        }
+      } else {
+        // General Islamic question - search As-Saadi database
+        const searchResults = tafsirSaadiService.searchTafsir(inputMessage)
+        
+        if (searchResults.length > 0) {
+          const relevantTafsir = searchResults[0]
+          source = 'Tafsir As-Saadi + AI'
+          verseInfo = `**Related: ${relevantTafsir.surahName} ${relevantTafsir.surah}:${relevantTafsir.ayah}**\n\n**Arabic:** ${relevantTafsir.arabicText}\n\n**Translation:** ${relevantTafsir.translation}\n\n**As-Saadi Explanation:**\n${relevantTafsir.tafsirSaadi}\n\n`
+          
+          const aiPrompt = `User asked: "${inputMessage}"
+
+I found this relevant As-Saadi Tafsir: "${relevantTafsir.tafsirSaadi}"
+
+Respond conversationally in ${language}, explaining how this As-Saadi commentary relates to their question and provide contemporary applications.`
+
+          const aiResponse = await generateTafsirExplanation(aiPrompt, language, 'detailed')
+          botResponse = aiResponse.success && aiResponse.data?.explanation ? 
+            `**How this relates to your question:**\n${aiResponse.data.explanation}` :
+            `This verse from As-Saadi's commentary is relevant to your question and provides valuable Islamic guidance.`
+        } else {
+          // No relevant As-Saadi content found
+          botResponse = language === 'arabic' ?
+            'يمكنك سؤالي عن آيات محددة من:\n\n**الفاتحة (1-7):** "اشرح البسملة"، "الفاتحة 2"\n**البقرة (1-3):** "البقرة 1"، "البقرة 2"\n\nأو اسأل عن مواضيع مثل: "الرحمة"، "الهداية"، "الحمد"' :
+            language === 'turkish' ?
+            'Şu ayetler hakkında soru sorabilirsiniz:\n\n**Fatiha (1-7):** "Bismillah\'ı açıkla", "Fatiha 2"\n**Bakara (1-3):** "Bakara 1", "Bakara 2"\n\nVeya şu konular: "Rahmet", "Hidayet", "Hamd"' :
+            language === 'indonesian' ?
+            'Anda bisa bertanya tentang ayat-ayat:\n\n**Al-Fatiha (1-7):** "Jelaskan Bismillah", "Al-Fatiha 2"\n**Al-Baqarah (1-3):** "Al-Baqarah 1", "Al-Baqarah 2"\n\nAtau topik: "Rahmat", "Hidayah", "Puji"' :
+            'You can ask me about specific verses:\n\n**Al-Fatiha (1-7):** "Explain Bismillah", "Al-Fatiha 2"\n**Al-Baqarah (1-3):** "Al-Baqarah 1", "Al-Baqarah 2"\n\nOr topics like: "Mercy", "Guidance", "Praise"'
+        }
       }
+
+      const botMessage: ChatMessage = {
+        id: Date.now().toString(),
+        type: 'bot',
+        content: verseInfo + botResponse,
+        timestamp: new Date(),
+        verse: verseRef ? `${verseRef.surah}:${verseRef.ayah}` : undefined,
+        source: source
+      }
+
       setMessages(prev => [...prev, botMessage])
+    } catch (error) {
+      console.error('Chat error:', error)
+      const errorMessage: ChatMessage = {
+        id: Date.now().toString(),
+        type: 'bot',
+        content: language === 'arabic' ? 
+          'عذراً، حدث خطأ في الاتصال مع OpenAI. تأكد من أن مفتاح API متصل بشكل صحيح.' : 
+          'Sorry, there was an error connecting to OpenAI. Please ensure your API key is properly configured.',
+        timestamp: new Date(),
+        source: 'Error'
+      }
+      setMessages(prev => [...prev, errorMessage])
+    } finally {
       setIsLoading(false)
-    }, 2000)
+    }
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
