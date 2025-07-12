@@ -37,13 +37,13 @@ const Dashboard = () => {
       borderColor: 'border-green-200'
     },
     {
-      id: 'tafsir-generator',
-      title: 'AI Tafsir Generator',
-      description: 'Get Quranic explanations and insights in your preferred language',
-      icon: '📖',
-      color: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-purple-50',
-      borderColor: 'border-purple-200'
+      id: 'ai-tafsir-chatbot',
+      title: 'AI Tafsir Chatbot',
+      description: 'Chat with AI about Quranic verses using authentic Tafsir As-Saadi',
+      icon: '🤖',
+      color: 'from-green-500 to-blue-600',
+      bgColor: 'bg-gradient-to-r from-green-50 to-blue-50',
+      borderColor: 'border-green-200'
     },
     {
       id: 'dua-generator',

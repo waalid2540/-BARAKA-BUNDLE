@@ -5,6 +5,7 @@ import Dashboard from './Dashboard'
 import IslamicNameGenerator from './IslamicNameGenerator'
 import IslamicKidsStories from './IslamicKidsStories'
 import TafsirGenerator from './TafsirGenerator'
+import AITafsirChatbot from './AITafsirChatbot'
 import DuaGenerator from './DuaGenerator'
 import PaymentSuccess from './PaymentSuccess'
 
@@ -18,6 +19,7 @@ function App() {
         <Route path="/islamic-name-generator" element={<IslamicNameGenerator />} />
         <Route path="/islamic-kids-stories" element={<IslamicKidsStories />} />
         <Route path="/tafsir-generator" element={<TafsirGenerator />} />
+        <Route path="/ai-tafsir-chatbot" element={<AITafsirChatbot />} />
         <Route path="/dua-generator" element={<DuaGenerator />} />
         
         {/* 404 */}
