@@ -1,5 +1,6 @@
 // AI Service for Baraka Bundle Islamic AI Tools
 // Integrates with OpenAI GPT-4 for authentic Islamic content generation
+// Enhanced with Tafsir As-Saadi integration
 
 const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY || ''
 const OPENAI_BASE_URL = 'https://api.openai.com/v1'
@@ -252,7 +253,89 @@ class AIService {
     }
     return response
   }
+
+  // Enhanced Tafsir generation with As-Saadi integration
+  async generateTafsirExplanation(enhancedPrompt: string, language: string, level: string) {
+    const payload = {
+      model: 'gpt-4',
+      messages: [
+        {
+          role: 'system',
+          content: `You are an Islamic scholar with deep knowledge of Quranic commentary, especially Tafsir As-Saadi by Sheikh Abdurrahman As-Saadi. When provided with authentic Tafsir As-Saadi content, base your explanations on that foundation while adding contemporary applications. Maintain scholarly accuracy and respect for traditional Islamic interpretation.
+
+Response should be in ${language} and appropriate for ${level} level understanding.
+
+Always provide response in this exact JSON format:
+{
+  "translation": "Verse translation in ${language}",
+  "arabicText": "Original Arabic verse",
+  "explanation": "Main explanation based on authentic sources",
+  "keyLessons": ["List of 3-5 key lessons in ${language}"],
+  "historicalContext": "Historical background in ${language}",
+  "practicalApplication": "Modern application guidance in ${language}",
+  "aiEnhancement": "Contemporary insights and applications in ${language}"
+}`
+        },
+        {
+          role: 'user',
+          content: enhancedPrompt
+        }
+      ],
+      temperature: 0.2, // Very low for religious accuracy
+      max_tokens: 4000
+    }
+
+    const response = await this.makeRequest('/chat/completions', payload)
+    
+    if (response.success && response.data?.choices?.[0]?.message?.content) {
+      try {
+        const content = response.data.choices[0].message.content.trim()
+        const jsonMatch = content.match(/\{[\s\S]*\}/)
+        
+        if (jsonMatch) {
+          const parsedData = JSON.parse(jsonMatch[0])
+          return {
+            success: true,
+            data: parsedData
+          }
+        } else {
+          return {
+            success: false,
+            error: 'Could not parse AI response'
+          }
+        }
+      } catch (error) {
+        console.error('Error parsing Tafsir response:', error)
+        return {
+          success: false,
+          error: 'Failed to parse AI response'
+        }
+      }
+    }
+    
+    return response
+  }
 }
 
 export const aiService = new AIService()
+
+// Export specific functions for easy import
+export const generateIslamicNames = (gender: 'male' | 'female', style: string, language: string, count?: number) =>
+  aiService.generateIslamicNames(gender, style, language, count)
+
+export const generateIslamicStory = (ageGroup: string, theme: string, language: string, situation?: string) =>
+  aiService.generateIslamicStory(ageGroup, theme, language, situation)
+
+export const generateTafsir = (surah: string, verseRange: string, language: string, level: string) =>
+  aiService.generateTafsir(surah, verseRange, language, level)
+
+export const generateTafsirExplanation = (enhancedPrompt: string, language: string, level: string) =>
+  aiService.generateTafsirExplanation(enhancedPrompt, language, level)
+
+export const generateDua = (category: string, language: string, situation?: string) =>
+  aiService.generateDua(category, language, situation)
+
+export const translateContent = (content: string, fromLanguage: string, toLanguage: string, contentType: 'ui' | 'religious') =>
+  aiService.translateContent(content, fromLanguage, toLanguage, contentType)
+
 export default aiService
