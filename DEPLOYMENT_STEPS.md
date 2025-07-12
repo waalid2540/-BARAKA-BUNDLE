@@ -62,7 +62,7 @@ Environment: Node
 Region: Frankfurt (closest to Middle East) or Oregon (global)
 Branch: main
 Build Command: npm install && npm run build
-Start Command: npx serve -s build -l 3000
+Start Command: npx serve -s dist -p 3000
 ```
 
 ### 2.4 Environment Variables (Leave empty for now)
