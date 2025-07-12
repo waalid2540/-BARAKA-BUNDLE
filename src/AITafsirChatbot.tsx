@@ -187,7 +187,9 @@ const AITafsirChatbot = () => {
 
     try {
       // Parse for verse references
+      console.log('Processing message:', inputMessage)
       const verseRef = parseVerseReference(inputMessage)
+      console.log('Parsed verse reference:', verseRef)
       let botResponse = ''
       let verseInfo = ''
       let source = 'AI Assistant'
@@ -216,11 +218,15 @@ As Dr. Ahmad, an Islamic scholar, provide a professional response that:
 
 Response in ${language}. Be concise and authoritative.`
 
+          console.log('About to call AI with prompt:', aiPrompt.substring(0, 100) + '...')
           const aiResponse = await generateSimpleResponse(aiPrompt, language)
+          console.log('AI Response received:', aiResponse)
           
           if (aiResponse.success && aiResponse.data) {
+            console.log('AI data exists:', aiResponse.data.substring(0, 50))
             botResponse = `**Dr. Ahmad's Response:**\n${aiResponse.data}`
           } else {
+            console.error('AI failed:', aiResponse.error)
             botResponse = `**Dr. Ahmad's Response:**\nBased on Sheikh As-Saadi's explanation, this verse provides essential guidance for our spiritual development. The commentary highlights key principles that remain relevant for contemporary Muslim practice.`
           }
         } else {
@@ -332,6 +338,8 @@ As Dr. Ahmad, provide a scholarly response in ${language} that:
             </div>
             
             <select
+              id="language-selector"
+              name="language"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
               className="bg-white border border-gray-300 rounded-lg px-4 py-2 font-medium focus:ring-2 focus:ring-green-500"
@@ -420,6 +428,8 @@ As Dr. Ahmad, provide a scholarly response in ${language} that:
             <div className="flex space-x-4">
               <input
                 type="text"
+                id="chat-input"
+                name="message"
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
@@ -430,6 +440,7 @@ As Dr. Ahmad, provide a scholarly response in ${language} that:
                 className="flex-1 border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 disabled={isLoading}
                 dir={language === 'arabic' ? 'rtl' : 'ltr'}
+                autoComplete="off"
               />
               <button
                 onClick={sendMessage}

@@ -3,6 +3,7 @@
 // Enhanced with Tafsir As-Saadi integration
 
 const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY || ''
+console.log('Environment check - API Key loaded:', OPENAI_API_KEY ? 'YES (length: ' + OPENAI_API_KEY.length + ')' : 'NO')
 const OPENAI_BASE_URL = 'https://api.openai.com/v1'
 
 interface AIResponse {
@@ -256,6 +257,9 @@ class AIService {
 
   // Simple AI chat response (no JSON parsing)
   async generateSimpleResponse(prompt: string, language: string): Promise<AIResponse> {
+    console.log('generateSimpleResponse called with language:', language)
+    console.log('API Key present:', OPENAI_API_KEY ? 'YES' : 'NO')
+    
     const payload = {
       model: 'gpt-4o-mini',
       messages: [
@@ -272,15 +276,19 @@ class AIService {
       max_tokens: 300
     }
 
+    console.log('Making API request...')
     const response = await this.makeRequest('/chat/completions', payload)
+    console.log('API request completed:', response.success ? 'SUCCESS' : 'FAILED')
     
     if (response.success && response.data?.choices?.[0]?.message?.content) {
+      console.log('AI content found:', response.data.choices[0].message.content.substring(0, 50) + '...')
       return {
         success: true,
         data: response.data.choices[0].message.content.trim()
       }
     }
     
+    console.log('AI response failed:', response.error)
     return response
   }
 
