@@ -75,34 +75,95 @@ const AITafsirChatbot = () => {
       }
     }
 
-    // Natural language patterns
+    // Smart conversational patterns
     if (lowerMessage.includes('bismillah') || lowerMessage.includes('basmalah') || message.includes('بسم الله')) {
       return { surah: 1, ayah: 1 }
     }
     
-    // Baqarah natural language
-    if (lowerMessage.includes('baqarah')) {
-      if (lowerMessage.includes('first') || lowerMessage.includes('1st')) {
-        return { surah: 2, ayah: 1 }
+    // Extract numbers from natural language for Fatiha
+    if (lowerMessage.includes('fatiha')) {
+      const ayahNumbers = message.match(/\b(\d+)\b/g)
+      if (ayahNumbers) {
+        const ayahNum = parseInt(ayahNumbers[0])
+        if (ayahNum >= 1 && ayahNum <= 7) {
+          return { surah: 1, ayah: ayahNum }
+        }
       }
-      if (lowerMessage.includes('second') || lowerMessage.includes('2nd')) {
-        return { surah: 2, ayah: 2 }
+      
+      // Handle word-based numbers for Fatiha
+      if (lowerMessage.includes('first') || lowerMessage.includes('1st') || lowerMessage.includes('one')) {
+        return { surah: 1, ayah: 1 }
       }
-      if (lowerMessage.includes('third') || lowerMessage.includes('3rd')) {
-        return { surah: 2, ayah: 3 }
+      if (lowerMessage.includes('second') || lowerMessage.includes('2nd') || lowerMessage.includes('two')) {
+        return { surah: 1, ayah: 2 }
+      }
+      if (lowerMessage.includes('third') || lowerMessage.includes('3rd') || lowerMessage.includes('three')) {
+        return { surah: 1, ayah: 3 }
+      }
+      if (lowerMessage.includes('fourth') || lowerMessage.includes('4th') || lowerMessage.includes('four')) {
+        return { surah: 1, ayah: 4 }
+      }
+      if (lowerMessage.includes('fifth') || lowerMessage.includes('5th') || lowerMessage.includes('five')) {
+        return { surah: 1, ayah: 5 }
+      }
+      if (lowerMessage.includes('sixth') || lowerMessage.includes('6th') || lowerMessage.includes('six')) {
+        return { surah: 1, ayah: 6 }
+      }
+      if (lowerMessage.includes('seventh') || lowerMessage.includes('7th') || lowerMessage.includes('seven')) {
+        return { surah: 1, ayah: 7 }
+      }
+      
+      // Topic-based matching for Fatiha
+      if (lowerMessage.includes('praise') || lowerMessage.includes('hamd')) {
+        return { surah: 1, ayah: 2 }
+      }
+      if (lowerMessage.includes('mercy') || lowerMessage.includes('rahman')) {
+        return { surah: 1, ayah: 3 }
+      }
+      if (lowerMessage.includes('judgment') || lowerMessage.includes('day') || lowerMessage.includes('malik')) {
+        return { surah: 1, ayah: 4 }
+      }
+      if (lowerMessage.includes('worship') || lowerMessage.includes('help')) {
+        return { surah: 1, ayah: 5 }
+      }
+      if (lowerMessage.includes('guidance') || lowerMessage.includes('path')) {
+        return { surah: 1, ayah: 6 }
+      }
+      if (lowerMessage.includes('straight') || lowerMessage.includes('righteous')) {
+        return { surah: 1, ayah: 7 }
       }
     }
     
-    // Fatiha natural language
-    if (lowerMessage.includes('fatiha')) {
-      if (lowerMessage.includes('first') || lowerMessage.includes('1st')) {
-        return { surah: 1, ayah: 1 }
+    // Extract numbers from natural language for Baqarah  
+    if (lowerMessage.includes('baqarah')) {
+      const ayahNumbers = message.match(/\b(\d+)\b/g)
+      if (ayahNumbers) {
+        const ayahNum = parseInt(ayahNumbers[0])
+        if (ayahNum >= 1 && ayahNum <= 3) {
+          return { surah: 2, ayah: ayahNum }
+        }
       }
-      if (lowerMessage.includes('second') || lowerMessage.includes('2nd')) {
-        return { surah: 1, ayah: 2 }
+      
+      // Handle word-based numbers for Baqarah
+      if (lowerMessage.includes('first') || lowerMessage.includes('1st') || lowerMessage.includes('one')) {
+        return { surah: 2, ayah: 1 }
       }
-      if (lowerMessage.includes('praise') || lowerMessage.includes('hamd')) {
-        return { surah: 1, ayah: 2 }
+      if (lowerMessage.includes('second') || lowerMessage.includes('2nd') || lowerMessage.includes('two')) {
+        return { surah: 2, ayah: 2 }
+      }
+      if (lowerMessage.includes('third') || lowerMessage.includes('3rd') || lowerMessage.includes('three')) {
+        return { surah: 2, ayah: 3 }
+      }
+      
+      // Topic-based matching for Baqarah
+      if (lowerMessage.includes('alif') || lowerMessage.includes('lam') || lowerMessage.includes('meem')) {
+        return { surah: 2, ayah: 1 }
+      }
+      if (lowerMessage.includes('book') || lowerMessage.includes('doubt') || lowerMessage.includes('guidance')) {
+        return { surah: 2, ayah: 2 }
+      }
+      if (lowerMessage.includes('unseen') || lowerMessage.includes('prayer') || lowerMessage.includes('charity')) {
+        return { surah: 2, ayah: 3 }
       }
     }
 
@@ -133,7 +194,9 @@ const AITafsirChatbot = () => {
 
       if (verseRef) {
         // User asked about specific verse - check As-Saadi database
+        console.log('Parsed verse reference:', verseRef)
         const tafsir = tafsirSaadiService.getTafsirForVerse(verseRef.surah, verseRef.ayah)
+        console.log('Found tafsir:', tafsir ? 'Yes' : 'No')
         
         if (tafsir) {
           // We have authentic As-Saadi explanation!
@@ -148,16 +211,16 @@ This relates to ${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}.
 **Authentic As-Saadi Tafsir:** "${tafsir.tafsirSaadi}"
 
 Based ONLY on the As-Saadi explanation above, provide a conversational response in ${language} that:
-1. Acknowledges their question
+1. Acknowledges their question about this verse
 2. Explains how As-Saadi's commentary answers their question  
 3. Adds contemporary applications based on As-Saadi's insights
 4. Keeps it conversational and helpful
 
-Do not add interpretations beyond what As-Saadi provides. Use his explanation as the foundation.
+Do not add interpretations beyond what As-Saadi provides. Use his explanation as the foundation. Keep response under 200 words.`
 
-Respond with ONLY the explanation text, no JSON format needed.`
-
+          console.log('Calling AI with prompt...')
           const aiResponse = await generateSimpleResponse(aiPrompt, language)
+          console.log('AI Response:', aiResponse)
           
           if (aiResponse.success && aiResponse.data) {
             botResponse = `**AI Contemporary Application:**\n${aiResponse.data}`

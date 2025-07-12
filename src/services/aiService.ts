@@ -256,6 +256,9 @@ class AIService {
 
   // Simple AI chat response (no JSON parsing)
   async generateSimpleResponse(prompt: string, language: string): Promise<AIResponse> {
+    console.log('AI Service - API Key available:', OPENAI_API_KEY ? 'Yes' : 'No')
+    console.log('AI Service - Making request for language:', language)
+    
     const payload = {
       model: 'gpt-4',
       messages: [
@@ -272,7 +275,9 @@ class AIService {
       max_tokens: 1000
     }
 
+    console.log('AI Service - Sending payload:', JSON.stringify(payload, null, 2))
     const response = await this.makeRequest('/chat/completions', payload)
+    console.log('AI Service - Response received:', response)
     
     if (response.success && response.data?.choices?.[0]?.message?.content) {
       return {
