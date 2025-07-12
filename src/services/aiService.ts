@@ -2,7 +2,15 @@
 // Integrates with OpenAI GPT-4 for authentic Islamic content generation
 // Enhanced with Tafsir As-Saadi integration
 
-const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY || ''
+// Try multiple ways to get API key
+const OPENAI_API_KEY = 
+  process.env.REACT_APP_OPENAI_API_KEY || 
+  // @ts-ignore - Import from config if available
+  (window as any).OPENAI_API_KEY ||
+  // Fallback for production
+  import.meta.env.VITE_OPENAI_API_KEY ||
+  ''
+
 console.log('Environment check - API Key loaded:', OPENAI_API_KEY ? 'YES (length: ' + OPENAI_API_KEY.length + ')' : 'NO')
 const OPENAI_BASE_URL = 'https://api.openai.com/v1'
 
