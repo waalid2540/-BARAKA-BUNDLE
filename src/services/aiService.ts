@@ -69,7 +69,7 @@ class AIService {
     - Respectful and in line with Islamic values`
 
     const payload = {
-      model: 'gpt-4',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
@@ -111,7 +111,7 @@ class AIService {
     - Is culturally sensitive for global Muslim audience`
 
     const payload = {
-      model: 'gpt-4',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
@@ -154,7 +154,7 @@ class AIService {
     - Is accessible to modern Muslim readers`
 
     const payload = {
-      model: 'gpt-4',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
@@ -196,7 +196,7 @@ class AIService {
     - Is appropriate for the specified category and situation`
 
     const payload = {
-      model: 'gpt-4',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
@@ -227,7 +227,7 @@ class AIService {
     Provide only the translation without additional text.`
 
     const payload = {
-      model: 'gpt-4',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
@@ -256,28 +256,23 @@ class AIService {
 
   // Simple AI chat response (no JSON parsing)
   async generateSimpleResponse(prompt: string, language: string): Promise<AIResponse> {
-    console.log('AI Service - API Key available:', OPENAI_API_KEY ? 'Yes' : 'No')
-    console.log('AI Service - Making request for language:', language)
-    
     const payload = {
-      model: 'gpt-4',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
-          content: `You are an Islamic scholar with deep knowledge of Quranic commentary. Respond conversationally in ${language}.`
+          content: `You are Dr. Ahmad, a respected Islamic scholar specializing in Quranic commentary and Tafsir As-Saadi. You provide professional, scholarly responses in ${language}. Keep responses concise (under 150 words), authoritative, and respectful. Always maintain academic tone while being accessible.`
         },
         {
           role: 'user',
           content: prompt
         }
       ],
-      temperature: 0.3,
-      max_tokens: 1000
+      temperature: 0.2,
+      max_tokens: 300
     }
 
-    console.log('AI Service - Sending payload:', JSON.stringify(payload, null, 2))
     const response = await this.makeRequest('/chat/completions', payload)
-    console.log('AI Service - Response received:', response)
     
     if (response.success && response.data?.choices?.[0]?.message?.content) {
       return {
@@ -292,7 +287,7 @@ class AIService {
   // Enhanced Tafsir generation with As-Saadi integration
   async generateTafsirExplanation(enhancedPrompt: string, language: string, level: string) {
     const payload = {
-      model: 'gpt-4',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',

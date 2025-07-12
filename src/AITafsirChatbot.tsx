@@ -31,12 +31,12 @@ const AITafsirChatbot = () => {
       id: '1',
       type: 'bot',
       content: language === 'arabic' ?
-        'السلام عليكم! أنا مساعد تفسير القرآن بالذكاء الاصطناعي المدعوم بتفسير السعدي. اسألني عن أي آية!' :
+        'السلام عليكم ورحمة الله وبركاته\n\nأنا الدكتور أحمد، متخصص في التفسير القرآني وتفسير السعدي. أقدم شروحات علمية دقيقة للآيات القرآنية.\n\n**المتاح حالياً:**\n• سورة الفاتحة (1-7)\n• سورة البقرة (1-3)\n\nاسأل عن أي آية أو موضوع إسلامي.' :
         language === 'turkish' ?
-        'Selamün aleyküm! Ben As-Saadi Tefsiri destekli AI asistanıyım. Kuran ayetleri hakkında soru sorabilirsiniz!' :
+        'Selamün aleyküm ve rahmetullahi ve berakatüh\n\nBen Dr. Ahmad, Kuran tefsiri ve As-Saadi tefsiri uzmanıyım. Kuran ayetleri hakkında akademik açıklamalar sunuyorum.\n\n**Mevcut:**\n• Fatiha Suresi (1-7)\n• Bakara Suresi (1-3)\n\nHerhangi bir ayet veya İslami konu hakkında soru sorabilirsiniz.' :
         language === 'indonesian' ?
-        'Assalamu\'alaikum! Saya asisten AI Tafsir berdasarkan Tafsir As-Saadi. Tanyakan tentang ayat Al-Quran!' :
-        'Assalamu Alaikum! I\'m your AI Tafsir assistant powered by Tafsir As-Saadi. Ask me about any Quranic verse!',
+        'Assalamu\'alaikum warahmatullahi wabarakatuh\n\nSaya Dr. Ahmad, spesialis tafsir Al-Quran dan Tafsir As-Saadi. Saya memberikan penjelasan akademis tentang ayat-ayat Al-Quran.\n\n**Tersedia:**\n• Surah Al-Fatiha (1-7)\n• Surah Al-Baqarah (1-3)\n\nTanyakan tentang ayat atau topik Islam apa pun.' :
+        'Assalamu Alaikum wa Rahmatullahi wa Barakatuh\n\nI am Dr. Ahmad, a specialist in Quranic commentary and Tafsir As-Saadi. I provide scholarly explanations of Quranic verses based on authentic Islamic scholarship.\n\n**Currently Available:**\n• Surah Al-Fatiha (verses 1-7)\n• Surah Al-Baqarah (verses 1-3)\n\nPlease ask about any verse or Islamic topic.',
       timestamp: new Date()
     }
     setMessages([welcomeMessage])
@@ -194,39 +194,34 @@ const AITafsirChatbot = () => {
 
       if (verseRef) {
         // User asked about specific verse - check As-Saadi database
-        console.log('Parsed verse reference:', verseRef)
         const tafsir = tafsirSaadiService.getTafsirForVerse(verseRef.surah, verseRef.ayah)
-        console.log('Found tafsir:', tafsir ? 'Yes' : 'No')
         
         if (tafsir) {
           // We have authentic As-Saadi explanation!
-          source = 'Tafsir As-Saadi + AI'
-          verseInfo = `**${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}**\n\n**Arabic:** ${tafsir.arabicText}\n\n**Translation:** ${tafsir.translation}\n\n**Tafsir As-Saadi:**\n${tafsir.tafsirSaadi}\n\n`
+          source = 'Dr. Ahmad - Islamic Scholar'
+          verseInfo = `**${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}**\n\n**Arabic Text:**\n${tafsir.arabicText}\n\n**Translation:**\n${tafsir.translation}\n\n**Tafsir As-Saadi:**\n${tafsir.tafsirSaadi}\n\n`
           
-          // Get AI enhancement based on As-Saadi + user question
-          const aiPrompt = `You are an AI Islamic scholar. A user asked: "${inputMessage}"
+          // Get professional AI enhancement based on As-Saadi + user question
+          const aiPrompt = `A student asks: "${inputMessage}"
 
-This relates to ${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}.
+This question relates to ${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}.
 
-**Authentic As-Saadi Tafsir:** "${tafsir.tafsirSaadi}"
+Sheikh As-Saadi explains: "${tafsir.tafsirSaadi}"
 
-Based ONLY on the As-Saadi explanation above, provide a conversational response in ${language} that:
-1. Acknowledges their question about this verse
-2. Explains how As-Saadi's commentary answers their question  
-3. Adds contemporary applications based on As-Saadi's insights
-4. Keeps it conversational and helpful
+As Dr. Ahmad, an Islamic scholar, provide a professional response that:
+1. Addresses their question with scholarly authority
+2. Explains the verse based on As-Saadi's commentary
+3. Offers practical guidance for contemporary Muslim life
+4. Maintains academic tone while being accessible
 
-Do not add interpretations beyond what As-Saadi provides. Use his explanation as the foundation. Keep response under 200 words.`
+Response in ${language}. Be concise and authoritative.`
 
-          console.log('Calling AI with prompt...')
           const aiResponse = await generateSimpleResponse(aiPrompt, language)
-          console.log('AI Response:', aiResponse)
           
           if (aiResponse.success && aiResponse.data) {
-            botResponse = `**AI Contemporary Application:**\n${aiResponse.data}`
+            botResponse = `**Dr. Ahmad's Response:**\n${aiResponse.data}`
           } else {
-            console.error('AI Response Error:', aiResponse.error)
-            botResponse = `**Contemporary Application:**\nBased on As-Saadi's explanation, this verse teaches us important principles that we can apply in our daily lives as Muslims.`
+            botResponse = `**Dr. Ahmad's Response:**\nBased on Sheikh As-Saadi's explanation, this verse provides essential guidance for our spiritual development. The commentary highlights key principles that remain relevant for contemporary Muslim practice.`
           }
         } else {
           // Verse not in As-Saadi database
@@ -244,19 +239,23 @@ Do not add interpretations beyond what As-Saadi provides. Use his explanation as
         
         if (searchResults.length > 0) {
           const relevantTafsir = searchResults[0]
-          source = 'Tafsir As-Saadi + AI'
-          verseInfo = `**Related: ${relevantTafsir.surahName} ${relevantTafsir.surah}:${relevantTafsir.ayah}**\n\n**Arabic:** ${relevantTafsir.arabicText}\n\n**Translation:** ${relevantTafsir.translation}\n\n**As-Saadi Explanation:**\n${relevantTafsir.tafsirSaadi}\n\n`
+          source = 'Dr. Ahmad - Islamic Scholar'
+          verseInfo = `**Related Verse: ${relevantTafsir.surahName} ${relevantTafsir.surah}:${relevantTafsir.ayah}**\n\n**Arabic Text:**\n${relevantTafsir.arabicText}\n\n**Translation:**\n${relevantTafsir.translation}\n\n**Sheikh As-Saadi's Commentary:**\n${relevantTafsir.tafsirSaadi}\n\n`
           
-          const aiPrompt = `User asked: "${inputMessage}"
+          const aiPrompt = `A student asks about: "${inputMessage}"
 
-I found this relevant As-Saadi Tafsir: "${relevantTafsir.tafsirSaadi}"
+I found this relevant verse with Sheikh As-Saadi's commentary: "${relevantTafsir.tafsirSaadi}"
 
-Respond conversationally in ${language}, explaining how this As-Saadi commentary relates to their question and provide contemporary applications.`
+As Dr. Ahmad, provide a scholarly response in ${language} that:
+1. Explains how this verse relates to their question
+2. Draws insights from As-Saadi's commentary
+3. Offers practical guidance for Muslim life
+4. Maintains professional academic tone`
 
           const aiResponse = await generateSimpleResponse(aiPrompt, language)
           botResponse = aiResponse.success && aiResponse.data ? 
-            `**How this relates to your question:**\n${aiResponse.data}` :
-            `This verse from As-Saadi's commentary is relevant to your question and provides valuable Islamic guidance.`
+            `**Dr. Ahmad's Analysis:**\n${aiResponse.data}` :
+            `**Dr. Ahmad's Analysis:**\nThis verse provides relevant guidance from the Quran. Sheikh As-Saadi's commentary offers valuable insights that address your question within the framework of authentic Islamic scholarship.`
         } else {
           // No relevant As-Saadi content found
           botResponse = language === 'arabic' ?
@@ -317,16 +316,16 @@ Respond conversationally in ${language}, explaining how this As-Saadi commentary
                 ← Back
               </button>
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-600 rounded-2xl flex items-center justify-center">
-                  <span className="text-3xl">🤖</span>
+                <div className="w-12 h-12 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+                  <span className="text-3xl">👨‍🏫</span>
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">AI Tafsir Chatbot</h1>
+                  <h1 className="text-2xl font-bold text-gray-900">Dr. Ahmad - Islamic Scholar</h1>
                   <p className="text-sm text-gray-600">
-                    {language === 'arabic' ? 'مدعوم بتفسير السعدي' :
-                     language === 'turkish' ? 'As-Saadi Tefsiri Destekli' :
-                     language === 'indonesian' ? 'Didukung Tafsir As-Saadi' :
-                     'Powered by Tafsir As-Saadi'}
+                    {language === 'arabic' ? 'متخصص في تفسير السعدي والتفسير القرآني' :
+                     language === 'turkish' ? 'As-Saadi Tefsiri ve Kuran Tefsiri Uzmanı' :
+                     language === 'indonesian' ? 'Spesialis Tafsir As-Saadi dan Tafsir Al-Quran' :
+                     'Specialist in Tafsir As-Saadi & Quranic Commentary'}
                   </p>
                 </div>
               </div>
@@ -378,8 +377,8 @@ Respond conversationally in ${language}, explaining how this As-Saadi commentary
                 } p-4`}>
                   {message.type === 'bot' && (
                     <div className="flex items-center space-x-2 mb-2">
-                      <span className="text-green-600">🤖</span>
-                      <span className="text-sm font-medium text-green-700">AI Tafsir Assistant</span>
+                      <span className="text-emerald-600">👨‍🏫</span>
+                      <span className="text-sm font-medium text-emerald-700">Dr. Ahmad</span>
                     </div>
                   )}
                   <div className="whitespace-pre-wrap leading-relaxed" dir={language === 'arabic' ? 'rtl' : 'ltr'}>
@@ -396,8 +395,8 @@ Respond conversationally in ${language}, explaining how this As-Saadi commentary
               <div className="flex justify-start mb-6">
                 <div className="bg-gray-100 rounded-2xl rounded-bl-md p-4">
                   <div className="flex items-center space-x-2">
-                    <span className="text-green-600">🤖</span>
-                    <span className="text-sm font-medium text-green-700">AI Tafsir Assistant</span>
+                    <span className="text-emerald-600">👨‍🏫</span>
+                    <span className="text-sm font-medium text-emerald-700">Dr. Ahmad</span>
                   </div>
                   <div className="flex items-center space-x-2 mt-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce"></div>
