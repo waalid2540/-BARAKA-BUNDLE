@@ -63,6 +63,7 @@ const Dashboard = () => {
       'name-generator': '/islamic-name-generator',
       'kids-stories': '/islamic-kids-stories',
       'tafsir-generator': '/tafsir-generator',
+      'ai-tafsir-chatbot': '/ai-tafsir-chatbot',
       'dua-generator': '/dua-generator'
     }
     const route = routes[toolId as keyof typeof routes]
