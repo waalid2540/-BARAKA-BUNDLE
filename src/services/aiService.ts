@@ -254,6 +254,36 @@ class AIService {
     return response
   }
 
+  // Simple AI chat response (no JSON parsing)
+  async generateSimpleResponse(prompt: string, language: string): Promise<AIResponse> {
+    const payload = {
+      model: 'gpt-4',
+      messages: [
+        {
+          role: 'system',
+          content: `You are an Islamic scholar with deep knowledge of Quranic commentary. Respond conversationally in ${language}.`
+        },
+        {
+          role: 'user',
+          content: prompt
+        }
+      ],
+      temperature: 0.3,
+      max_tokens: 1000
+    }
+
+    const response = await this.makeRequest('/chat/completions', payload)
+    
+    if (response.success && response.data?.choices?.[0]?.message?.content) {
+      return {
+        success: true,
+        data: response.data.choices[0].message.content.trim()
+      }
+    }
+    
+    return response
+  }
+
   // Enhanced Tafsir generation with As-Saadi integration
   async generateTafsirExplanation(enhancedPrompt: string, language: string, level: string) {
     const payload = {
@@ -331,6 +361,9 @@ export const generateTafsir = (surah: string, verseRange: string, language: stri
 
 export const generateTafsirExplanation = (enhancedPrompt: string, language: string, level: string) =>
   aiService.generateTafsirExplanation(enhancedPrompt, language, level)
+
+export const generateSimpleResponse = (prompt: string, language: string) =>
+  aiService.generateSimpleResponse(prompt, language)
 
 export const generateDua = (category: string, language: string, situation?: string) =>
   aiService.generateDua(category, language, situation)

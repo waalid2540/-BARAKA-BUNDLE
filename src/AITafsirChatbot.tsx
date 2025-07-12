@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { tafsirSaadiService } from './services/tafsirSaadiProcessor'
-import { generateTafsirExplanation } from './services/aiService'
+import { generateSimpleResponse } from './services/aiService'
 
 interface ChatMessage {
   id: string
@@ -49,21 +49,20 @@ const AITafsirChatbot = () => {
 
   // Parse user message to find verse references
   const parseVerseReference = (message: string): { surah: number, ayah: number } | null => {
-    // Look for patterns like "1:1", "Al-Fatiha 1", "Baqarah 2:5", "Bismillah", etc.
-    const patterns = [
-      /(\d+):(\d+)/,                          // "1:1"
+    const lowerMessage = message.toLowerCase()
+    
+    // Direct number patterns
+    const numberPatterns = [
+      /(\d+):(\d+)/,                          // "1:1", "2:1"
       /al-fatiha\s+(\d+)/i,                   // "Al-Fatiha 1"
       /fatiha\s+(\d+)/i,                      // "Fatiha 1"
       /al-baqarah\s+(\d+)/i,                  // "Al-Baqarah 1"
       /baqarah\s+(\d+)/i,                     // "Baqarah 1"
-      /bismillah/i,                           // "Bismillah" -> Al-Fatiha 1
-      /basmalah/i,                            // "Basmalah" -> Al-Fatiha 1
       /الفاتحة\s+(\d+)/,                       // "الفاتحة 1"
       /البقرة\s+(\d+)/,                        // "البقرة 1"
-      /بسم\s*الله/,                            // "بسم الله" -> Al-Fatiha 1
     ]
 
-    for (const pattern of patterns) {
+    for (const pattern of numberPatterns) {
       const match = message.match(pattern)
       if (match) {
         if (pattern.source.includes(':')) {
@@ -72,11 +71,41 @@ const AITafsirChatbot = () => {
           return { surah: 1, ayah: parseInt(match[1]) }
         } else if (pattern.source.includes('baqarah') || pattern.source.includes('البقرة')) {
           return { surah: 2, ayah: parseInt(match[1]) }
-        } else if (pattern.source.includes('bismillah') || pattern.source.includes('basmalah') || pattern.source.includes('بسم')) {
-          return { surah: 1, ayah: 1 } // Bismillah = Al-Fatiha 1:1
         }
       }
     }
+
+    // Natural language patterns
+    if (lowerMessage.includes('bismillah') || lowerMessage.includes('basmalah') || message.includes('بسم الله')) {
+      return { surah: 1, ayah: 1 }
+    }
+    
+    // Baqarah natural language
+    if (lowerMessage.includes('baqarah')) {
+      if (lowerMessage.includes('first') || lowerMessage.includes('1st')) {
+        return { surah: 2, ayah: 1 }
+      }
+      if (lowerMessage.includes('second') || lowerMessage.includes('2nd')) {
+        return { surah: 2, ayah: 2 }
+      }
+      if (lowerMessage.includes('third') || lowerMessage.includes('3rd')) {
+        return { surah: 2, ayah: 3 }
+      }
+    }
+    
+    // Fatiha natural language
+    if (lowerMessage.includes('fatiha')) {
+      if (lowerMessage.includes('first') || lowerMessage.includes('1st')) {
+        return { surah: 1, ayah: 1 }
+      }
+      if (lowerMessage.includes('second') || lowerMessage.includes('2nd')) {
+        return { surah: 1, ayah: 2 }
+      }
+      if (lowerMessage.includes('praise') || lowerMessage.includes('hamd')) {
+        return { surah: 1, ayah: 2 }
+      }
+    }
+
     return null
   }
 
@@ -124,13 +153,16 @@ Based ONLY on the As-Saadi explanation above, provide a conversational response 
 3. Adds contemporary applications based on As-Saadi's insights
 4. Keeps it conversational and helpful
 
-Do not add interpretations beyond what As-Saadi provides. Use his explanation as the foundation.`
+Do not add interpretations beyond what As-Saadi provides. Use his explanation as the foundation.
 
-          const aiResponse = await generateTafsirExplanation(aiPrompt, language, 'detailed')
+Respond with ONLY the explanation text, no JSON format needed.`
+
+          const aiResponse = await generateSimpleResponse(aiPrompt, language)
           
-          if (aiResponse.success && aiResponse.data?.explanation) {
-            botResponse = `**AI Contemporary Application:**\n${aiResponse.data.explanation}`
+          if (aiResponse.success && aiResponse.data) {
+            botResponse = `**AI Contemporary Application:**\n${aiResponse.data}`
           } else {
+            console.error('AI Response Error:', aiResponse.error)
             botResponse = `**Contemporary Application:**\nBased on As-Saadi's explanation, this verse teaches us important principles that we can apply in our daily lives as Muslims.`
           }
         } else {
@@ -158,9 +190,9 @@ I found this relevant As-Saadi Tafsir: "${relevantTafsir.tafsirSaadi}"
 
 Respond conversationally in ${language}, explaining how this As-Saadi commentary relates to their question and provide contemporary applications.`
 
-          const aiResponse = await generateTafsirExplanation(aiPrompt, language, 'detailed')
-          botResponse = aiResponse.success && aiResponse.data?.explanation ? 
-            `**How this relates to your question:**\n${aiResponse.data.explanation}` :
+          const aiResponse = await generateSimpleResponse(aiPrompt, language)
+          botResponse = aiResponse.success && aiResponse.data ? 
+            `**How this relates to your question:**\n${aiResponse.data}` :
             `This verse from As-Saadi's commentary is relevant to your question and provides valuable Islamic guidance.`
         } else {
           // No relevant As-Saadi content found
