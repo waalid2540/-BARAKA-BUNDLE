@@ -203,20 +203,21 @@ const AITafsirChatbot = () => {
           source = 'AI Tafsir Assistant'
           verseInfo = `**${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}**\n\n**Arabic Text:**\n${tafsir.arabicText}\n\n**Translation:**\n${tafsir.translation}\n\n**Tafsir As-Saadi:**\n${tafsir.tafsirSaadi}\n\n`
           
-          // Get professional AI enhancement based on As-Saadi + user question
-          const aiPrompt = `A student asks: "${inputMessage}"
+          // Get engaging AI enhancement based on As-Saadi + user question
+          const aiPrompt = `A person asks: "${inputMessage}"
 
-This question relates to ${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}.
+This relates to ${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}.
 
-Sheikh As-Saadi explains: "${tafsir.tafsirSaadi}"
+Sheikh As-Saadi's authentic explanation: "${tafsir.tafsirSaadi}"
 
-As Dr. Ahmad, an Islamic scholar, provide a professional response that:
-1. Addresses their question with scholarly authority
-2. Explains the verse based on As-Saadi's commentary
-3. Offers practical guidance for contemporary Muslim life
-4. Maintains academic tone while being accessible
+As a wise tafsir teacher, provide an engaging response in ${language} that:
+1. Acknowledges their question warmly
+2. Shares As-Saadi's wisdom in an accessible way
+3. Gives practical reflections for their daily life
+4. Makes the tafsir come alive with examples or stories
+5. Be conversational and inspiring, not academic
 
-Response in ${language}. Be concise and authoritative.`
+Help them connect with this verse personally through As-Saadi's insights.`
 
           console.log('About to call AI with prompt:', aiPrompt.substring(0, 100) + '...')
           const aiResponse = await generateSimpleResponse(aiPrompt, language)
@@ -253,19 +254,15 @@ Response in ${language}. Be concise and authoritative.`
           source = 'AI Tafsir Assistant'
           const greetingPrompt = `A user greets you with: "${inputMessage}"
 
-You are an AI Tafsir assistant. Respond warmly in ${language} with:
-1. Islamic greeting response
-2. Explain you provide ONLY Quranic tafsir based on As-Saadi
-3. Ask them to share a specific verse for authentic tafsir
-4. Mention available verses (Al-Fatiha 1-7, Al-Baqarah 1-3)
+Respond warmly in ${language} as a wise tafsir teacher. Welcome them and immediately share a beautiful reflection from Quranic tafsir to engage them. Maybe share wisdom from Al-Fatiha about Allah's mercy, or how the Quran guides us daily. Make it conversational and inspiring, not just informational.
 
-Focus ONLY on tafsir service, not general Islamic advice.`
+Connect the greeting to tafsir wisdom and invite them to explore more verses together.`
 
           const aiResponse = await generateSimpleResponse(greetingPrompt, language)
           if (aiResponse.success && aiResponse.data) {
             botResponse = `**Authentic Tafsir:**\n${aiResponse.data}`
           } else {
-            botResponse = `**Authentic Tafsir:**\nWa alaykum assalam wa rahmatullahi wa barakatuh! I'm your AI Tafsir assistant powered by authentic As-Saadi commentary. I provide ONLY Quranic tafsir and verse explanations. Please share a specific verse (like "Bismillah" or "Al-Fatiha 2") for authentic tafsir analysis.`
+            botResponse = `**Tafsir Wisdom:**\nWa alaykum assalam wa rahmatullahi wa barakatuh! \n\nYou know, every time we say "Assalamu Alaikum," we're following the beautiful guidance from the Quran. As Sheikh As-Saadi explains about Al-Fatiha, Allah begins with "Bismillah Ar-Rahman Ar-Raheem" - showing us that mercy and peace should be our starting point in everything.\n\nWhat verse would you like to explore today? I love sharing the deep wisdom hidden in every ayah!`
           }
         } else {
           // General Islamic question - search As-Saadi database
@@ -295,15 +292,14 @@ As Dr. Ahmad, provide a scholarly response in ${language} that:
           source = 'AI Tafsir Assistant'
           const generalPrompt = `A user asks: "${inputMessage}"
 
-You are a specialized AI Tafsir assistant. If this question relates to Quranic verses, provide tafsir in ${language}. If NOT about Quranic verses, politely redirect them to ask about specific verses.
+As a wise tafsir teacher, connect their question to Quranic wisdom in ${language}. Even if they ask about life, relationships, struggles, or any topic - relate it back to relevant Quranic verses and As-Saadi insights.
 
-Response guidelines:
-1. If Quran-related: Provide authentic tafsir analysis
-2. If NOT Quran-related: "I specialize in Quranic tafsir only. Please ask about a specific verse."
-3. Guide them to available verses (Al-Fatiha 1-7, Al-Baqarah 1-3)
-4. Stay focused on tafsir specialty
+For example:
+- If they ask about patience → Connect to Quranic verses about sabr
+- If they ask about guidance → Reference Al-Fatiha "Guide us to the straight path"
+- If they ask about mercy → Connect to "Ar-Rahman Ar-Raheem"
 
-Do NOT provide general Islamic advice - only Quranic commentary.`
+Be conversational, wise, and educational. Share practical reflections from tafsir that help them in daily life. Make the Quran come alive for them through As-Saadi's wisdom.`
 
           const aiResponse = await generateSimpleResponse(generalPrompt, language)
           if (aiResponse.success && aiResponse.data) {
