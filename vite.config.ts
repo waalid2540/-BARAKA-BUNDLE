@@ -6,5 +6,8 @@ export default defineConfig({
   server: {
     port: 3001,
     host: true
+  },
+  define: {
+    'process.env.REACT_APP_OPENAI_API_KEY': JSON.stringify(process.env.REACT_APP_OPENAI_API_KEY)
   }
 })
