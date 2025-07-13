@@ -245,8 +245,31 @@ Response in ${language}. Be concise and authoritative.`
             `Sorry, verse ${verseRef.surah}:${verseRef.ayah} is not available in our As-Saadi database yet.\n\n**Available:**\n• Al-Fatiha 1-7 (all verses)\n• Al-Baqarah 1-3 (first 3 verses)\n\nTry: "Explain Bismillah" or "Al-Fatiha 2"`
         }
       } else {
-        // General Islamic question - search As-Saadi database
-        const searchResults = tafsirSaadiService.searchTafsir(inputMessage)
+        // Handle conversational messages and general questions
+        const lowerInput = inputMessage.toLowerCase()
+        
+        // Check for greetings first
+        if (lowerInput.includes('salam') || lowerInput.includes('hello') || lowerInput.includes('hi') || lowerInput.includes('peace')) {
+          source = 'Dr. Ahmad - Islamic Scholar'
+          const greetingPrompt = `A student greets you with: "${inputMessage}"
+
+As Dr. Ahmad, respond warmly in ${language} with:
+1. Proper Islamic greeting response
+2. Brief introduction of your expertise in Tafsir As-Saadi
+3. Invitation to ask about Quranic verses or Islamic topics
+4. Mention available content (Al-Fatiha 1-7, Al-Baqarah 1-3)
+
+Keep it warm, scholarly, and conversational.`
+
+          const aiResponse = await generateSimpleResponse(greetingPrompt, language)
+          if (aiResponse.success && aiResponse.data) {
+            botResponse = `**Dr. Ahmad's Response:**\n${aiResponse.data}`
+          } else {
+            botResponse = `**Dr. Ahmad's Response:**\nWa alaykum assalam wa rahmatullahi wa barakatuh! Welcome! I'm Dr. Ahmad, your Islamic scholar specializing in Tafsir As-Saadi. I'm here to help you understand Quranic verses through authentic scholarship. Please feel free to ask about any verse or Islamic topic.`
+          }
+        } else {
+          // General Islamic question - search As-Saadi database
+          const searchResults = tafsirSaadiService.searchTafsir(inputMessage)
         
         if (searchResults.length > 0) {
           const relevantTafsir = searchResults[0]
@@ -268,14 +291,32 @@ As Dr. Ahmad, provide a scholarly response in ${language} that:
             `**Dr. Ahmad's Analysis:**\n${aiResponse.data}` :
             `**Dr. Ahmad's Analysis:**\nThis verse provides relevant guidance from the Quran. Sheikh As-Saadi's commentary offers valuable insights that address your question within the framework of authentic Islamic scholarship.`
         } else {
-          // No relevant As-Saadi content found
-          botResponse = language === 'arabic' ?
-            'يمكنك سؤالي عن آيات محددة من:\n\n**الفاتحة (1-7):** "اشرح البسملة"، "الفاتحة 2"\n**البقرة (1-3):** "البقرة 1"، "البقرة 2"\n\nأو اسأل عن مواضيع مثل: "الرحمة"، "الهداية"، "الحمد"' :
-            language === 'turkish' ?
-            'Şu ayetler hakkında soru sorabilirsiniz:\n\n**Fatiha (1-7):** "Bismillah\'ı açıkla", "Fatiha 2"\n**Bakara (1-3):** "Bakara 1", "Bakara 2"\n\nVeya şu konular: "Rahmet", "Hidayet", "Hamd"' :
-            language === 'indonesian' ?
-            'Anda bisa bertanya tentang ayat-ayat:\n\n**Al-Fatiha (1-7):** "Jelaskan Bismillah", "Al-Fatiha 2"\n**Al-Baqarah (1-3):** "Al-Baqarah 1", "Al-Baqarah 2"\n\nAtau topik: "Rahmat", "Hidayah", "Puji"' :
-            'You can ask me about specific verses:\n\n**Al-Fatiha (1-7):** "Explain Bismillah", "Al-Fatiha 2"\n**Al-Baqarah (1-3):** "Al-Baqarah 1", "Al-Baqarah 2"\n\nOr topics like: "Mercy", "Guidance", "Praise"'
+          // No As-Saadi content found - use AI for general Islamic guidance
+          source = 'Dr. Ahmad - Islamic Scholar'
+          const generalPrompt = `A student asks: "${inputMessage}"
+
+As Dr. Ahmad, an Islamic scholar specializing in Tafsir As-Saadi, provide a helpful response in ${language} that:
+1. Addresses their question from an Islamic perspective
+2. References relevant Quranic principles when appropriate
+3. Offers practical Islamic guidance
+4. Maintains scholarly authority while being conversational
+5. If relevant, guide them toward specific verses in our available As-Saadi database (Al-Fatiha 1-7, Al-Baqarah 1-3)
+
+Keep it concise, scholarly, and helpful.`
+
+          const aiResponse = await generateSimpleResponse(generalPrompt, language)
+          if (aiResponse.success && aiResponse.data) {
+            botResponse = `**Dr. Ahmad's Analysis:**\n${aiResponse.data}`
+          } else {
+            botResponse = language === 'arabic' ?
+              'يمكنك سؤالي عن آيات محددة من:\n\n**الفاتحة (1-7):** "اشرح البسملة"، "الفاتحة 2"\n**البقرة (1-3):** "البقرة 1"، "البقرة 2"\n\nأو اسأل عن مواضيع مثل: "الرحمة"، "الهداية"، "الحمد"' :
+              language === 'turkish' ?
+              'Şu ayetler hakkında soru sorabilirsiniz:\n\n**Fatiha (1-7):** "Bismillah\'ı açıkla", "Fatiha 2"\n**Bakara (1-3):** "Bakara 1", "Bakara 2"\n\nVeya şu konular: "Rahmet", "Hidayet", "Hamd"' :
+              language === 'indonesian' ?
+              'Anda bisa bertanya tentang ayat-ayat:\n\n**Al-Fatiha (1-7):** "Jelaskan Bismillah", "Al-Fatiha 2"\n**Al-Baqarah (1-3):** "Al-Baqarah 1", "Al-Baqarah 2"\n\nAtau topik: "Rahmat", "Hidayah", "Puji"' :
+              'You can ask me about specific verses:\n\n**Al-Fatiha (1-7):** "Explain Bismillah", "Al-Fatiha 2"\n**Al-Baqarah (1-3):** "Al-Baqarah 1", "Al-Baqarah 2"\n\nOr topics like: "Mercy", "Guidance", "Praise"'
+          }
+        }
         }
       }
 
