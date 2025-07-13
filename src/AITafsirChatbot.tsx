@@ -22,7 +22,23 @@ const AITafsirChatbot = () => {
     { code: 'english', name: 'English', flag: '🇺🇸' },
     { code: 'arabic', name: 'العربية', flag: '🇸🇦' },
     { code: 'turkish', name: 'Türkçe', flag: '🇹🇷' },
-    { code: 'indonesian', name: 'Bahasa Indonesia', flag: '🇮🇩' }
+    { code: 'indonesian', name: 'Bahasa Indonesia', flag: '🇮🇩' },
+    { code: 'urdu', name: 'اردو', flag: '🇵🇰' },
+    { code: 'persian', name: 'فارسی', flag: '🇮🇷' },
+    { code: 'malay', name: 'Bahasa Melayu', flag: '🇲🇾' },
+    { code: 'french', name: 'Français', flag: '🇫🇷' },
+    { code: 'spanish', name: 'Español', flag: '🇪🇸' },
+    { code: 'german', name: 'Deutsch', flag: '🇩🇪' },
+    { code: 'italian', name: 'Italiano', flag: '🇮🇹' },
+    { code: 'russian', name: 'Русский', flag: '🇷🇺' },
+    { code: 'chinese', name: '中文', flag: '🇨🇳' },
+    { code: 'japanese', name: '日本語', flag: '🇯🇵' },
+    { code: 'korean', name: '한국어', flag: '🇰🇷' },
+    { code: 'hindi', name: 'हिन्दी', flag: '🇮🇳' },
+    { code: 'bengali', name: 'বাংলা', flag: '🇧🇩' },
+    { code: 'swahili', name: 'Kiswahili', flag: '🇰🇪' },
+    { code: 'hausa', name: 'Hausa', flag: '🇳🇬' },
+    { code: 'albanian', name: 'Shqip', flag: '🇦🇱' }
   ]
 
   // Welcome message
@@ -36,7 +52,7 @@ const AITafsirChatbot = () => {
         'Selamün aleyküm ve rahmetullahi ve berakatüh\n\nBen otantik As-Saadi Tefsiri ile desteklenen AI Tefsir asistanıyım. Sadece Kuran tefsiri sağlarım.\n\n**Mevcut:**\n• Fatiha (1-7)\n• Bakara (1-3)\n\nAs-Saadi tefsiri + çağdaş uygulamalar için herhangi bir ayet sorun.' :
         language === 'indonesian' ?
         'Assalamu\'alaikum warahmatullahi wabarakatuh\n\nSaya asisten AI Tafsir yang didukung Tafsir As-Saadi otentik. Saya hanya menyediakan tafsir Al-Quran.\n\n**Tersedia:**\n• Al-Fatiha (1-7)\n• Al-Baqarah (1-3)\n\nTanyakan ayat apa pun untuk tafsir As-Saadi + aplikasi kontemporer.' :
-        'Assalamu Alaikum wa Rahmatullahi wa Barakatuh\n\nI am an AI Tafsir assistant powered by authentic Tafsir As-Saadi. I provide Quranic commentary exclusively.\n\n**Available:**\n• Al-Fatiha (1-7)\n• Al-Baqarah (1-3)\n\nAsk about any verse for As-Saadi tafsir + contemporary applications.',
+        'Assalamu Alaikum wa Rahmatullahi wa Barakatuh\n\nI am an AI Tafsir assistant powered by authentic Tafsir As-Saadi. I provide Quranic commentary exclusively.\n\n**Available:**\n• Al-Fatiha (1-7)\n• Al-Baqarah (1-3)\n\n**Language Support:**\nSay "explain in Arabic" or "en español" to switch languages automatically!\n\nAsk about any verse for As-Saadi tafsir + contemporary applications.',
       timestamp: new Date()
     }
     setMessages([welcomeMessage])
@@ -46,6 +62,46 @@ const AITafsirChatbot = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  // Auto-detect language requests and update language state
+  const detectLanguageRequest = (message: string): string | null => {
+    const lowerMessage = message.toLowerCase()
+    
+    // Language detection patterns
+    const languagePatterns = [
+      // Direct language requests
+      { patterns: ['in arabic', 'باللغة العربية', 'بالعربي', 'arabic'], code: 'arabic' },
+      { patterns: ['in turkish', 'türkçe', 'turkish'], code: 'turkish' },
+      { patterns: ['in urdu', 'اردو میں', 'urdu'], code: 'urdu' },
+      { patterns: ['in persian', 'فارسی', 'farsi', 'persian'], code: 'persian' },
+      { patterns: ['in french', 'en français', 'french'], code: 'french' },
+      { patterns: ['in spanish', 'en español', 'spanish'], code: 'spanish' },
+      { patterns: ['in german', 'auf deutsch', 'german'], code: 'german' },
+      { patterns: ['in italian', 'in italiano', 'italian'], code: 'italian' },
+      { patterns: ['in russian', 'на русском', 'russian'], code: 'russian' },
+      { patterns: ['in chinese', '中文', 'chinese'], code: 'chinese' },
+      { patterns: ['in japanese', '日本語', 'japanese'], code: 'japanese' },
+      { patterns: ['in korean', '한국어', 'korean'], code: 'korean' },
+      { patterns: ['in hindi', 'हिन्दी में', 'hindi'], code: 'hindi' },
+      { patterns: ['in bengali', 'বাংলায়', 'bengali'], code: 'bengali' },
+      { patterns: ['in indonesian', 'bahasa indonesia', 'indonesian'], code: 'indonesian' },
+      { patterns: ['in malay', 'bahasa melayu', 'malay'], code: 'malay' },
+      { patterns: ['in swahili', 'kiswahili', 'swahili'], code: 'swahili' },
+      { patterns: ['in hausa', 'hausa'], code: 'hausa' },
+      { patterns: ['in albanian', 'shqip', 'albanian'], code: 'albanian' },
+      { patterns: ['in english', 'english'], code: 'english' }
+    ]
+    
+    for (const lang of languagePatterns) {
+      for (const pattern of lang.patterns) {
+        if (lowerMessage.includes(pattern)) {
+          return lang.code
+        }
+      }
+    }
+    
+    return null
+  }
 
   // Parse user message to find verse references
   const parseVerseReference = (message: string): { surah: number, ayah: number } | null => {
@@ -186,6 +242,26 @@ const AITafsirChatbot = () => {
     setIsLoading(true)
 
     try {
+      // Check for language requests first
+      const detectedLanguage = detectLanguageRequest(inputMessage)
+      if (detectedLanguage && detectedLanguage !== language) {
+        console.log('Language change detected:', detectedLanguage)
+        setLanguage(detectedLanguage)
+        
+        // Show language switch confirmation
+        const languageName = languages.find(l => l.code === detectedLanguage)?.name || detectedLanguage
+        const confirmMessage: ChatMessage = {
+          id: Date.now().toString(),
+          type: 'bot',
+          content: `✅ Language switched to ${languageName}! Now I'll respond in ${languageName}. Please repeat your question.`,
+          timestamp: new Date(),
+          source: 'AI Tafsir Assistant'
+        }
+        setMessages(prev => [...prev, confirmMessage])
+        setIsLoading(false)
+        return
+      }
+
       // Parse for verse references
       console.log('Processing message:', inputMessage)
       const verseRef = parseVerseReference(inputMessage)
@@ -509,10 +585,16 @@ Be conversational, wise, and educational. Share practical reflections from tafsi
                 {language === 'arabic' ? 'الفاتحة 1' : 'Al-Fatiha 1'}
               </button>
               <button 
-                onClick={() => setInputMessage('What is Islamic guidance?')}
+                onClick={() => setInputMessage('Explain in Arabic')}
                 className="text-sm bg-purple-100 text-purple-700 px-3 py-1 rounded-full hover:bg-purple-200 transition-colors"
               >
-                {language === 'arabic' ? 'ما هي الهداية الإسلامية؟' : 'Islamic Guidance?'}
+                Switch to Arabic
+              </button>
+              <button 
+                onClick={() => setInputMessage('En español')}
+                className="text-sm bg-orange-100 text-orange-700 px-3 py-1 rounded-full hover:bg-orange-200 transition-colors"
+              >
+                Español
               </button>
             </div>
           </div>
