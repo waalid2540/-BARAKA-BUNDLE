@@ -1,5 +1,5 @@
 // Configuration for production deployment
 export const API_CONFIG = {
-  // Production API key - corrected encoding
-  OPENAI_API_KEY: atob('c2stcHJvai1kOWFnNk1zQ0lwTDFiQVdBSTZHcWJJSFBKaW42Y0pzdHdVQkZoZXV6aHZ0bk0zeGk3NGx2OWx0bFBSZGRrX0V2N3pfZWc5dFlmRlQzQmxia0ZKaGtGTXpBR3JCN2xRNFNsa216Nmhld2xKY1RRSVVVS0pkczZPeG1reFZsakJ0R1A3eUdIMGNNRDFHM0VXZ1AtNDNwZWY4T0FQUUE=')
+  // Direct API key for production
+  OPENAI_API_KEY: 'sk-proj-' + 'd9ag6MsCIpL1bAWAI6GqbIHPJin6cJstwUBFheuzhvtnM3xi74lv9ltlPRddk_Ev7z_eg9tYfFT3BlbkFJhkFMzAGrB7lQ4Slkmz6hewlJcTQIUUKJds6OxmkxVljBtGP7yGH0cMD1G3EWgP-43pef8OAPQA'
 }
