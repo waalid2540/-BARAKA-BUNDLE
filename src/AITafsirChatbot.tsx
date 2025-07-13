@@ -31,12 +31,12 @@ const AITafsirChatbot = () => {
       id: '1',
       type: 'bot',
       content: language === 'arabic' ?
-        'السلام عليكم ورحمة الله وبركاته\n\nأنا الدكتور أحمد، متخصص في التفسير القرآني وتفسير السعدي. أقدم شروحات علمية دقيقة للآيات القرآنية.\n\n**المتاح حالياً:**\n• سورة الفاتحة (1-7)\n• سورة البقرة (1-3)\n\nاسأل عن أي آية أو موضوع إسلامي.' :
+        'السلام عليكم ورحمة الله وبركاته\n\nأنا مساعد تفسير القرآن المدعوم بتفسير السعدي الأصيل. أقدم تفسيرات قرآنية حصرياً.\n\n**المتاح:**\n• الفاتحة (1-7)\n• البقرة (1-3)\n\nاسأل عن أي آية للحصول على تفسير السعدي + تطبيقات معاصرة.' :
         language === 'turkish' ?
-        'Selamün aleyküm ve rahmetullahi ve berakatüh\n\nBen Dr. Ahmad, Kuran tefsiri ve As-Saadi tefsiri uzmanıyım. Kuran ayetleri hakkında akademik açıklamalar sunuyorum.\n\n**Mevcut:**\n• Fatiha Suresi (1-7)\n• Bakara Suresi (1-3)\n\nHerhangi bir ayet veya İslami konu hakkında soru sorabilirsiniz.' :
+        'Selamün aleyküm ve rahmetullahi ve berakatüh\n\nBen otantik As-Saadi Tefsiri ile desteklenen AI Tefsir asistanıyım. Sadece Kuran tefsiri sağlarım.\n\n**Mevcut:**\n• Fatiha (1-7)\n• Bakara (1-3)\n\nAs-Saadi tefsiri + çağdaş uygulamalar için herhangi bir ayet sorun.' :
         language === 'indonesian' ?
-        'Assalamu\'alaikum warahmatullahi wabarakatuh\n\nSaya Dr. Ahmad, spesialis tafsir Al-Quran dan Tafsir As-Saadi. Saya memberikan penjelasan akademis tentang ayat-ayat Al-Quran.\n\n**Tersedia:**\n• Surah Al-Fatiha (1-7)\n• Surah Al-Baqarah (1-3)\n\nTanyakan tentang ayat atau topik Islam apa pun.' :
-        'Assalamu Alaikum wa Rahmatullahi wa Barakatuh\n\nI am Dr. Ahmad, a specialist in Quranic commentary and Tafsir As-Saadi. I provide scholarly explanations of Quranic verses based on authentic Islamic scholarship.\n\n**Currently Available:**\n• Surah Al-Fatiha (verses 1-7)\n• Surah Al-Baqarah (verses 1-3)\n\nPlease ask about any verse or Islamic topic.',
+        'Assalamu\'alaikum warahmatullahi wabarakatuh\n\nSaya asisten AI Tafsir yang didukung Tafsir As-Saadi otentik. Saya hanya menyediakan tafsir Al-Quran.\n\n**Tersedia:**\n• Al-Fatiha (1-7)\n• Al-Baqarah (1-3)\n\nTanyakan ayat apa pun untuk tafsir As-Saadi + aplikasi kontemporer.' :
+        'Assalamu Alaikum wa Rahmatullahi wa Barakatuh\n\nI am an AI Tafsir assistant powered by authentic Tafsir As-Saadi. I provide Quranic commentary exclusively.\n\n**Available:**\n• Al-Fatiha (1-7)\n• Al-Baqarah (1-3)\n\nAsk about any verse for As-Saadi tafsir + contemporary applications.',
       timestamp: new Date()
     }
     setMessages([welcomeMessage])
@@ -200,7 +200,7 @@ const AITafsirChatbot = () => {
         
         if (tafsir) {
           // We have authentic As-Saadi explanation!
-          source = 'Dr. Ahmad - Islamic Scholar'
+          source = 'AI Tafsir Assistant'
           verseInfo = `**${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}**\n\n**Arabic Text:**\n${tafsir.arabicText}\n\n**Translation:**\n${tafsir.translation}\n\n**Tafsir As-Saadi:**\n${tafsir.tafsirSaadi}\n\n`
           
           // Get professional AI enhancement based on As-Saadi + user question
@@ -224,14 +224,14 @@ Response in ${language}. Be concise and authoritative.`
           
           if (aiResponse.success && aiResponse.data) {
             console.log('AI data exists:', aiResponse.data.substring(0, 50))
-            botResponse = `**Dr. Ahmad's Response:**\n${aiResponse.data}`
+            botResponse = `**Authentic Tafsir:**\n${aiResponse.data}`
           } else {
             console.error('AI failed with error:', aiResponse.error)
             // Better fallback with some actual guidance
             if (verseRef.surah === 1 && verseRef.ayah === 1) {
-              botResponse = `**Dr. Ahmad's Response:**\nAs Sheikh As-Saadi explains, Bismillah contains the most beautiful names of Allah. We should begin every action with this blessed phrase, seeking Allah's blessing and guidance. It reminds us that all success comes from Allah alone.`
+              botResponse = `**Authentic Tafsir:**\nAs Sheikh As-Saadi explains, Bismillah contains the most beautiful names of Allah. We should begin every action with this blessed phrase, seeking Allah's blessing and guidance. It reminds us that all success comes from Allah alone.`
             } else {
-              botResponse = `**Dr. Ahmad's Response:**\nBased on Sheikh As-Saadi's authentic commentary above, this verse provides essential guidance for our spiritual development. The explanation highlights timeless principles that remain highly relevant for contemporary Muslim practice.`
+              botResponse = `**Authentic Tafsir:**\nBased on Sheikh As-Saadi's authentic commentary above, this verse provides essential guidance for our spiritual development. The explanation highlights timeless principles that remain highly relevant for contemporary Muslim practice.`
             }
           }
         } else {
@@ -250,22 +250,22 @@ Response in ${language}. Be concise and authoritative.`
         
         // Check for greetings first
         if (lowerInput.includes('salam') || lowerInput.includes('hello') || lowerInput.includes('hi') || lowerInput.includes('peace')) {
-          source = 'Dr. Ahmad - Islamic Scholar'
-          const greetingPrompt = `A student greets you with: "${inputMessage}"
+          source = 'AI Tafsir Assistant'
+          const greetingPrompt = `A user greets you with: "${inputMessage}"
 
-As Dr. Ahmad, respond warmly in ${language} with:
-1. Proper Islamic greeting response
-2. Brief introduction of your expertise in Tafsir As-Saadi
-3. Invitation to ask about Quranic verses or Islamic topics
-4. Mention available content (Al-Fatiha 1-7, Al-Baqarah 1-3)
+You are an AI Tafsir assistant. Respond warmly in ${language} with:
+1. Islamic greeting response
+2. Explain you provide ONLY Quranic tafsir based on As-Saadi
+3. Ask them to share a specific verse for authentic tafsir
+4. Mention available verses (Al-Fatiha 1-7, Al-Baqarah 1-3)
 
-Keep it warm, scholarly, and conversational.`
+Focus ONLY on tafsir service, not general Islamic advice.`
 
           const aiResponse = await generateSimpleResponse(greetingPrompt, language)
           if (aiResponse.success && aiResponse.data) {
-            botResponse = `**Dr. Ahmad's Response:**\n${aiResponse.data}`
+            botResponse = `**Authentic Tafsir:**\n${aiResponse.data}`
           } else {
-            botResponse = `**Dr. Ahmad's Response:**\nWa alaykum assalam wa rahmatullahi wa barakatuh! Welcome! I'm Dr. Ahmad, your Islamic scholar specializing in Tafsir As-Saadi. I'm here to help you understand Quranic verses through authentic scholarship. Please feel free to ask about any verse or Islamic topic.`
+            botResponse = `**Authentic Tafsir:**\nWa alaykum assalam wa rahmatullahi wa barakatuh! I'm your AI Tafsir assistant powered by authentic As-Saadi commentary. I provide ONLY Quranic tafsir and verse explanations. Please share a specific verse (like "Bismillah" or "Al-Fatiha 2") for authentic tafsir analysis.`
           }
         } else {
           // General Islamic question - search As-Saadi database
@@ -273,7 +273,7 @@ Keep it warm, scholarly, and conversational.`
         
         if (searchResults.length > 0) {
           const relevantTafsir = searchResults[0]
-          source = 'Dr. Ahmad - Islamic Scholar'
+          source = 'AI Tafsir Assistant'
           verseInfo = `**Related Verse: ${relevantTafsir.surahName} ${relevantTafsir.surah}:${relevantTafsir.ayah}**\n\n**Arabic Text:**\n${relevantTafsir.arabicText}\n\n**Translation:**\n${relevantTafsir.translation}\n\n**Sheikh As-Saadi's Commentary:**\n${relevantTafsir.tafsirSaadi}\n\n`
           
           const aiPrompt = `A student asks about: "${inputMessage}"
@@ -288,25 +288,26 @@ As Dr. Ahmad, provide a scholarly response in ${language} that:
 
           const aiResponse = await generateSimpleResponse(aiPrompt, language)
           botResponse = aiResponse.success && aiResponse.data ? 
-            `**Dr. Ahmad's Analysis:**\n${aiResponse.data}` :
-            `**Dr. Ahmad's Analysis:**\nThis verse provides relevant guidance from the Quran. Sheikh As-Saadi's commentary offers valuable insights that address your question within the framework of authentic Islamic scholarship.`
+            `**Tafsir Analysis:**\n${aiResponse.data}` :
+            `**Tafsir Analysis:**\nThis verse provides relevant guidance from the Quran. Sheikh As-Saadi's commentary offers valuable insights that address your question within the framework of authentic Islamic scholarship.`
         } else {
           // No As-Saadi content found - use AI for general Islamic guidance
-          source = 'Dr. Ahmad - Islamic Scholar'
-          const generalPrompt = `A student asks: "${inputMessage}"
+          source = 'AI Tafsir Assistant'
+          const generalPrompt = `A user asks: "${inputMessage}"
 
-As Dr. Ahmad, an Islamic scholar specializing in Tafsir As-Saadi, provide a helpful response in ${language} that:
-1. Addresses their question from an Islamic perspective
-2. References relevant Quranic principles when appropriate
-3. Offers practical Islamic guidance
-4. Maintains scholarly authority while being conversational
-5. If relevant, guide them toward specific verses in our available As-Saadi database (Al-Fatiha 1-7, Al-Baqarah 1-3)
+You are a specialized AI Tafsir assistant. If this question relates to Quranic verses, provide tafsir in ${language}. If NOT about Quranic verses, politely redirect them to ask about specific verses.
 
-Keep it concise, scholarly, and helpful.`
+Response guidelines:
+1. If Quran-related: Provide authentic tafsir analysis
+2. If NOT Quran-related: "I specialize in Quranic tafsir only. Please ask about a specific verse."
+3. Guide them to available verses (Al-Fatiha 1-7, Al-Baqarah 1-3)
+4. Stay focused on tafsir specialty
+
+Do NOT provide general Islamic advice - only Quranic commentary.`
 
           const aiResponse = await generateSimpleResponse(generalPrompt, language)
           if (aiResponse.success && aiResponse.data) {
-            botResponse = `**Dr. Ahmad's Analysis:**\n${aiResponse.data}`
+            botResponse = `**Tafsir Analysis:**\n${aiResponse.data}`
           } else {
             botResponse = language === 'arabic' ?
               'يمكنك سؤالي عن آيات محددة من:\n\n**الفاتحة (1-7):** "اشرح البسملة"، "الفاتحة 2"\n**البقرة (1-3):** "البقرة 1"، "البقرة 2"\n\nأو اسأل عن مواضيع مثل: "الرحمة"، "الهداية"، "الحمد"' :
@@ -369,15 +370,15 @@ Keep it concise, scholarly, and helpful.`
               </button>
               <div className="flex items-center space-x-3">
                 <div className="w-12 h-12 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
-                  <span className="text-3xl">👨‍🏫</span>
+                  <span className="text-3xl">📖</span>
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">Dr. Ahmad - Islamic Scholar</h1>
+                  <h1 className="text-2xl font-bold text-gray-900">AI Tafsir Assistant</h1>
                   <p className="text-sm text-gray-600">
-                    {language === 'arabic' ? 'متخصص في تفسير السعدي والتفسير القرآني' :
-                     language === 'turkish' ? 'As-Saadi Tefsiri ve Kuran Tefsiri Uzmanı' :
-                     language === 'indonesian' ? 'Spesialis Tafsir As-Saadi dan Tafsir Al-Quran' :
-                     'Specialist in Tafsir As-Saadi & Quranic Commentary'}
+                    {language === 'arabic' ? 'مدعوم بتفسير السعدي الأصيل - تفسير قرآني حصرياً' :
+                     language === 'turkish' ? 'Otantik As-Saadi Tefsiri - Sadece Kuran Tefsiri' :
+                     language === 'indonesian' ? 'Tafsir As-Saadi Otentik - Khusus Tafsir Al-Quran' :
+                     'Authentic As-Saadi Tafsir - Quranic Commentary Only'}
                   </p>
                 </div>
               </div>
@@ -432,7 +433,7 @@ Keep it concise, scholarly, and helpful.`
                   {message.type === 'bot' && (
                     <div className="flex items-center space-x-2 mb-2">
                       <span className="text-emerald-600">👨‍🏫</span>
-                      <span className="text-sm font-medium text-emerald-700">Dr. Ahmad</span>
+                      <span className="text-sm font-medium text-emerald-700">AI Tafsir</span>
                     </div>
                   )}
                   <div className="whitespace-pre-wrap leading-relaxed" dir={language === 'arabic' ? 'rtl' : 'ltr'}>
