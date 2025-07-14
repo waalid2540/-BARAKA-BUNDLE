@@ -1,11 +1,7 @@
 import React from 'react'
+import PaymentButton from './components/PaymentButton'
 
 const LandingPage = () => {
-  const handlePurchase = () => {
-    // Navigate to payment success for demo
-    window.location.href = '/payment-success'
-  }
-
   const showDashboard = () => {
     window.location.href = '/dashboard'
   }
