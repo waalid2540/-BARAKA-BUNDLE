@@ -340,6 +340,10 @@ Connect the greeting to tafsir wisdom and invite them to explore more verses tog
           } else {
             botResponse = `**Tafsir Wisdom:**\nWa alaykum assalam wa rahmatullahi wa barakatuh! \n\nYou know, every time we say "Assalamu Alaikum," we're following the beautiful guidance from the Quran. As Sheikh As-Saadi explains about Al-Fatiha, Allah begins with "Bismillah Ar-Rahman Ar-Raheem" - showing us that mercy and peace should be our starting point in everything.\n\nWhat verse would you like to explore today? I love sharing the deep wisdom hidden in every ayah!`
           }
+        } else if (lowerInput.includes('ok') || lowerInput.includes('thanks') || lowerInput.includes('thank you') || lowerInput.includes('good') || lowerInput.includes('yes') || lowerInput.includes('alright')) {
+          // Handle casual responses
+          source = 'AI Tafsir Assistant'
+          botResponse = `**Tafsir Assistant:**\nAlhamdulillah. How can I help you with tafsir today?`
         } else {
           // General Islamic question - search As-Saadi database
           const searchResults = tafsirSaadiService.searchTafsir(inputMessage)
