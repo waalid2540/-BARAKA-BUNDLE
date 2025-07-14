@@ -5,6 +5,9 @@
 import { AsSaadiFinetuningService } from './fine-tuning-service'
 
 async function checkStatus(jobId?: string) {
+  // Load environment variables
+  require('dotenv').config()
+  
   const apiKey = process.env.REACT_APP_OPENAI_API_KEY
   
   if (!apiKey) {

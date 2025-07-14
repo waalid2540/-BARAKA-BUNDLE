@@ -6,6 +6,9 @@
 import { AsSaadiFinetuningService } from './fine-tuning-service'
 
 async function main() {
+  // Load environment variables
+  require('dotenv').config()
+  
   // Get API key from environment
   const apiKey = process.env.REACT_APP_OPENAI_API_KEY
   
