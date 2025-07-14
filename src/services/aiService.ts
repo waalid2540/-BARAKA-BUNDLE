@@ -116,13 +116,13 @@ class AIService {
     - Teach practical application of Islamic principles
     - Build character and moral reasoning
     - Connect children to their faith through storytelling
-    - Provide parents with discussion points for deeper learning`
+    - Provide parents with discussion points for deeper learning
     
     Provide response in ${language} language with the following JSON format:
     {
       "title": "Professional story title in ${language}",
       "arabicTitle": "العنوان بالعربية",
-      "content": "Full professional story content with proper paragraph structure (minimum 300 words, age-appropriate for ${ageGroup})",
+      "content": "Full professional story content with proper paragraph structure (minimum 400 words, age-appropriate for ${ageGroup})",
       "ageGroup": "${ageGroup}",
       "moralLesson": "Clear, actionable moral lesson in ${language}",
       "characters": ["List of main characters with brief descriptions"],
