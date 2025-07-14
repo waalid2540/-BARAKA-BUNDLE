@@ -91,42 +91,62 @@ class AIService {
   }
 
   async generateIslamicStory(ageGroup: string, theme: string, language: string, situation?: string) {
-    const prompt = `Create an Islamic story for children aged ${ageGroup} with the theme "${theme}".
+    const prompt = `Create a professional, authentic Islamic story for children aged ${ageGroup} with the theme "${theme}".
     ${situation ? `Specific situation: ${situation}` : ''}
+    
+    REQUIREMENTS:
+    - Professional, high-quality educational content
+    - Authentic Islamic teachings verified by Islamic scholarship
+    - Age-appropriate language and concepts for ${ageGroup} year olds
+    - Engaging narrative structure with clear beginning, middle, end
+    - Practical life lessons children can apply immediately
+    - Accurate Islamic terminology and concepts
+    - Cultural sensitivity for global Muslim families
+    - Professional formatting and presentation
     
     Provide response in ${language} language with the following JSON format:
     {
-      "title": "Story title in ${language}",
+      "title": "Professional story title in ${language}",
       "arabicTitle": "العنوان بالعربية",
-      "content": "Full story content appropriate for age ${ageGroup} in ${language}",
+      "content": "Full professional story content with proper paragraph structure (minimum 300 words, age-appropriate for ${ageGroup})",
       "ageGroup": "${ageGroup}",
-      "moralLesson": "Key moral lesson in ${language}",
-      "characters": ["List of main characters in ${language}"],
-      "theme": "${theme}"
-    }
-    
-    Ensure the story:
-    - Is age-appropriate for ${ageGroup} year olds
-    - Contains authentic Islamic teachings
-    - Has clear moral lessons
-    - Is engaging and educational
-    - Respects Islamic values and traditions
-    - Is culturally sensitive for global Muslim audience`
+      "moralLesson": "Clear, actionable moral lesson in ${language}",
+      "characters": ["List of main characters with brief descriptions"],
+      "theme": "${theme}",
+      "islamicConcepts": ["Key Islamic concepts taught in the story"],
+      "practicalApplication": "How children can apply this lesson in their daily life",
+      "parentGuide": "Guidance for parents on discussing this story with their child"
+    }`
 
     const payload = {
       model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
-          content: 'You are an Islamic educator and storyteller expert in creating age-appropriate Islamic content for children. Your stories should be authentic, educational, and engaging while maintaining Islamic values.'
+          content: `You are Dr. Amina Hassan, a renowned Islamic education specialist with a PhD in Islamic Studies and 15 years of experience creating educational content for Muslim children. You are an expert in:
+
+- Age-appropriate Islamic pedagogy
+- Authentic Islamic teachings and scholarship
+- Cross-cultural sensitivity for global Muslim families
+- Professional educational content creation
+- Child psychology and developmental stages
+
+Your stories must be:
+- Professionally written with excellent literary quality
+- Educationally sound and developmentally appropriate
+- Authentic to Islamic teachings and verified by scholarship
+- Engaging and memorable for children
+- Practical with real-world applications
+
+Write with the expertise and professionalism expected from a top-tier Islamic education specialist.`
         },
         {
           role: 'user',
           content: prompt
         }
       ],
-      temperature: 0.8,
-      max_tokens: 3000
+      temperature: 0.3,
+      max_tokens: 4000
     }
 
     return this.makeRequest('/chat/completions', payload)

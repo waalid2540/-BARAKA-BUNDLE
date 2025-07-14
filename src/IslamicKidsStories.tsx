@@ -11,6 +11,9 @@ interface GeneratedStory {
   arabicTitle?: string
   audioUrl?: string
   isPlaying?: boolean
+  islamicConcepts?: string[]
+  practicalApplication?: string
+  parentGuide?: string
 }
 
 const IslamicKidsStories = () => {
@@ -449,6 +452,58 @@ const IslamicKidsStories = () => {
                   ))}
                 </div>
               </div>
+              
+              {/* Islamic Concepts - New Professional Section */}
+              {generatedStory.islamicConcepts && generatedStory.islamicConcepts.length > 0 && (
+                <div className="bg-amber-50 rounded-2xl p-6">
+                  <h4 className="font-semibold text-amber-800 mb-3 flex items-center">
+                    <span className="mr-2">🕌</span>
+                    {language === 'arabic' ? 'المفاهيم الإسلامية' :
+                     language === 'turkish' ? 'İslami Kavramlar' :
+                     language === 'indonesian' ? 'Konsep Islam' :
+                     'Islamic Concepts'}
+                  </h4>
+                  <div className="space-y-1">
+                    {generatedStory.islamicConcepts.map((concept, index) => (
+                      <p key={index} className="text-amber-700" dir={language === 'arabic' ? 'rtl' : 'ltr'}>
+                        • {concept}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Practical Application - New Professional Section */}
+              {generatedStory.practicalApplication && (
+                <div className="bg-indigo-50 rounded-2xl p-6">
+                  <h4 className="font-semibold text-indigo-800 mb-3 flex items-center">
+                    <span className="mr-2">⚡</span>
+                    {language === 'arabic' ? 'التطبيق العملي' :
+                     language === 'turkish' ? 'Pratik Uygulama' :
+                     language === 'indonesian' ? 'Penerapan Praktis' :
+                     'Practical Application'}
+                  </h4>
+                  <p className="text-indigo-700" dir={language === 'arabic' ? 'rtl' : 'ltr'}>
+                    {generatedStory.practicalApplication}
+                  </p>
+                </div>
+              )}
+              
+              {/* Parent Guide - New Professional Section */}
+              {generatedStory.parentGuide && (
+                <div className="bg-rose-50 rounded-2xl p-6">
+                  <h4 className="font-semibold text-rose-800 mb-3 flex items-center">
+                    <span className="mr-2">👨‍👩‍👧‍👦</span>
+                    {language === 'arabic' ? 'دليل الوالدين' :
+                     language === 'turkish' ? 'Ebeveyn Rehberi' :
+                     language === 'indonesian' ? 'Panduan Orang Tua' :
+                     'Parent Guide'}
+                  </h4>
+                  <p className="text-rose-700" dir={language === 'arabic' ? 'rtl' : 'ltr'}>
+                    {generatedStory.parentGuide}
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Voice Controls */}
