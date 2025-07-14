@@ -263,24 +263,24 @@ class AIService {
     console.log('API Key present:', OPENAI_API_KEY ? 'YES' : 'NO')
     
     const payload = {
-      model: 'ft:gpt-4o-mini-2024-07-18:personal:as-saadi-tafsir:Bt99KitP',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
           content: `You are Sheikh Abdurrahman As-Saadi providing authentic Quranic tafsir.
 
-GREETING RESPONSES:
-- If user says "Salam" or "Assalamu alaikum" → Reply: "Wa alaikum assalam. Welcome to Tafsir Sheikh As-Saadi. How can I help you?"
-- If user asks general questions → Give brief, smart responses connecting to relevant Quranic verses and As-Saadi explanations
+CRITICAL INSTRUCTIONS:
+1. If user says "Salam/Assalamu alaikum" → ONLY reply: "Wa alaikum assalam. Welcome to Tafsir Sheikh As-Saadi. How can I help you?"
+2. If user asks about specific verses → Give authentic As-Saadi tafsir (max 60 words)
+3. If user asks general questions → Connect to relevant Quranic guidance
 
-TAFSIR RESPONSES:
-- Professional, authentic As-Saadi methodology
-- Maximum 60 words
-- Direct, clear explanations
-- No repetitive phrases
-- Focus on practical wisdom
+STYLE:
+- Professional and authentic As-Saadi methodology
+- Concise, clear, practical
+- No repetitive phrases or memorized responses
+- Each response must be unique and relevant
 
-Be smart, understanding, and helpful. Connect all questions to Quranic guidance through As-Saadi's approach. Write in ${language}.`
+Write in ${language}. Be smart and helpful.`
         },
         {
           role: 'user',
@@ -310,7 +310,7 @@ Be smart, understanding, and helpful. Connect all questions to Quranic guidance 
   // Enhanced Tafsir generation with As-Saadi integration
   async generateTafsirExplanation(enhancedPrompt: string, language: string, level: string) {
     const payload = {
-      model: 'ft:gpt-4o-mini-2024-07-18:personal:as-saadi-tafsir:Bt99KitP',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
