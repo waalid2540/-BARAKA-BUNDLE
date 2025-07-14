@@ -47,8 +47,15 @@ const IslamicKidsStories = () => {
     
     try {
       // Generate story using AI with selected language
-      console.log(`Generating story for age ${ageGroup}, theme ${theme}, language ${language}`)
-      const response = await aiService.generateIslamicStory(ageGroup, theme, language, '')
+      console.log(`🎯 Generating story: Age ${ageGroup}, Theme ${theme}, Language ${language}`)
+      
+      // Set a timeout for the API call
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Request timed out')), 30000)
+      )
+      
+      const apiCall = aiService.generateIslamicStory(ageGroup, theme, language, '')
+      const response = await Promise.race([apiCall, timeoutPromise])
       
       let baseStory: GeneratedStory
       
@@ -126,7 +133,15 @@ const IslamicKidsStories = () => {
 
       setGeneratedStory(finalStory)
     } catch (error) {
-      console.error('Error generating story:', error)
+      console.error('❌ Story generation error:', error)
+      
+      // Show user-friendly error message
+      if (error.message === 'Request timed out') {
+        alert('Story generation is taking longer than expected. Please try again with a simpler theme.')
+      } else {
+        alert('Failed to generate story. Please check your connection and try again.')
+      }
+      
       setGeneratedStory(getFallbackStory())
     }
     
