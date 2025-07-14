@@ -317,5 +317,3 @@ const LandingPageNew = () => {
 }
 
 export default LandingPageNew
-
-export default LandingPageNew
