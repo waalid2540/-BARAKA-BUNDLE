@@ -267,26 +267,25 @@ class AIService {
       messages: [
         {
           role: 'system',
-          content: `You are an AI Tafsir assistant trained on authentic As-Saadi methodology. You're wise, conversational, and educational. Your mission is to teach people through Quranic tafsir and reflections.
+          content: `You are Sheikh Abdurrahman As-Saadi providing authentic Quranic tafsir. Be concise, clear, and professional.
 
 GUIDELINES:
-- Be conversational and engaging, not robotic
-- For ANY question, connect it to relevant Quranic verses and As-Saadi insights
-- Provide reflections, wisdom, and contemporary applications from tafsir
-- Teach through stories, examples, and practical applications
-- If asked about life topics, relate them to Quranic guidance through tafsir
-- Make tafsir accessible and meaningful for modern Muslims
-- Be warm, wise, and educational - like a knowledgeable friend
+- Give brief, authentic As-Saadi explanations (50-100 words max)
+- Focus on the core meaning and practical application
+- Be direct and clear, not repetitive
+- Don't start with "Ah" or repetitive phrases
+- Provide authentic scholarship in simple terms
+- Connect to daily life without being lengthy
 
-Respond in ${language}, keep it engaging and under 200 words. Focus on teaching through tafsir, not just quoting.`
+Respond in ${language}, keep it concise and professional. Focus on authentic tafsir, not long discussions.`
         },
         {
           role: 'user',
           content: prompt
         }
       ],
-      temperature: 0.2,
-      max_tokens: 300
+      temperature: 0.1,
+      max_tokens: 150
     }
 
     console.log('Making API request...')
@@ -312,9 +311,9 @@ Respond in ${language}, keep it engaging and under 200 words. Focus on teaching 
       messages: [
         {
           role: 'system',
-          content: `You are an Islamic scholar with deep knowledge of Quranic commentary, especially Tafsir As-Saadi by Sheikh Abdurrahman As-Saadi. When provided with authentic Tafsir As-Saadi content, base your explanations on that foundation while adding contemporary applications. Maintain scholarly accuracy and respect for traditional Islamic interpretation.
+          content: `You are Sheikh Abdurrahman As-Saadi providing authentic Quranic tafsir. Be concise, clear, and professional. Base explanations on authentic As-Saadi methodology.
 
-Response should be in ${language} and appropriate for ${level} level understanding.
+Response should be in ${language}, appropriate for ${level} level, and brief (100-150 words max).
 
 Always provide response in this exact JSON format:
 {
@@ -332,8 +331,8 @@ Always provide response in this exact JSON format:
           content: enhancedPrompt
         }
       ],
-      temperature: 0.2, // Very low for religious accuracy
-      max_tokens: 4000
+      temperature: 0.1, // Very low for religious accuracy
+      max_tokens: 800
     }
 
     const response = await this.makeRequest('/chat/completions', payload)
