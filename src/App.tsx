@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import LandingPage from './LandingPage'
+import LandingPageNew from './LandingPageNew'
 import Dashboard from './Dashboard'
 import IslamicNameGenerator from './IslamicNameGenerator'
 import IslamicKidsStories from './IslamicKidsStories'
@@ -13,7 +13,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<LandingPageNew />} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/islamic-name-generator" element={<IslamicNameGenerator />} />
