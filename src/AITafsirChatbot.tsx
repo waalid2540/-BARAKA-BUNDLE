@@ -341,9 +341,20 @@ Connect the greeting to tafsir wisdom and invite them to explore more verses tog
             botResponse = `**Tafsir Wisdom:**\nWa alaykum assalam wa rahmatullahi wa barakatuh! \n\nYou know, every time we say "Assalamu Alaikum," we're following the beautiful guidance from the Quran. As Sheikh As-Saadi explains about Al-Fatiha, Allah begins with "Bismillah Ar-Rahman Ar-Raheem" - showing us that mercy and peace should be our starting point in everything.\n\nWhat verse would you like to explore today? I love sharing the deep wisdom hidden in every ayah!`
           }
         } else if (lowerInput.includes('ok') || lowerInput.includes('thanks') || lowerInput.includes('thank you') || lowerInput.includes('good') || lowerInput.includes('yes') || lowerInput.includes('alright')) {
-          // Handle casual responses
+          // Handle casual responses with AI engagement
           source = 'AI Tafsir Assistant'
-          botResponse = `**Tafsir Assistant:**\nAlhamdulillah. How can I help you with tafsir today?`
+          const casualPrompt = `A student says: "${inputMessage}"
+          
+This is a casual response. As Sheikh As-Saadi, respond warmly and naturally, then ask an engaging question about tafsir to continue the conversation. Maybe ask about their favorite verse, what they're currently reading, or suggest exploring a beautiful ayah together.
+
+Be conversational and genuinely interested in their spiritual journey. Write in ${language}.`
+
+          const aiResponse = await generateSimpleResponse(casualPrompt, language)
+          botResponse = aiResponse.success && aiResponse.data ? 
+            `**Sheikh As-Saadi:**\n${aiResponse.data}` :
+            `**Sheikh As-Saadi:**\nAlhamdulillah! I'm glad we're connecting. You know, every conversation about the Quran is a blessing. 
+
+What's been on your heart lately? Is there a particular verse or concept you've been thinking about? I'd love to explore some beautiful tafsir together!`
         } else {
           // General Islamic question - search As-Saadi database
           const searchResults = tafsirSaadiService.searchTafsir(inputMessage)
