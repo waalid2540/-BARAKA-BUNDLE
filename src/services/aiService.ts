@@ -263,7 +263,7 @@ class AIService {
     console.log('API Key present:', OPENAI_API_KEY ? 'YES' : 'NO')
     
     const payload = {
-      model: 'gpt-4o-mini',
+      model: 'ft:gpt-4o-mini-2024-07-18:personal:as-saadi-tafsir:Bt99KitP',
       messages: [
         {
           role: 'system',
@@ -308,7 +308,7 @@ Respond in ${language}, keep it engaging and under 200 words. Focus on teaching 
   // Enhanced Tafsir generation with As-Saadi integration
   async generateTafsirExplanation(enhancedPrompt: string, language: string, level: string) {
     const payload = {
-      model: 'gpt-4o-mini',
+      model: 'ft:gpt-4o-mini-2024-07-18:personal:as-saadi-tafsir:Bt99KitP',
       messages: [
         {
           role: 'system',
