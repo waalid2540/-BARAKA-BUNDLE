@@ -91,18 +91,32 @@ class AIService {
   }
 
   async generateIslamicStory(ageGroup: string, theme: string, language: string, situation?: string) {
-    const prompt = `Create a professional, authentic Islamic story for children aged ${ageGroup} with the theme "${theme}".
+    const prompt = `Create a professional, engaging Islamic story for children aged ${ageGroup} with the theme "${theme}".
     ${situation ? `Specific situation: ${situation}` : ''}
     
-    REQUIREMENTS:
-    - Professional, high-quality educational content
-    - Authentic Islamic teachings verified by Islamic scholarship
-    - Age-appropriate language and concepts for ${ageGroup} year olds
-    - Engaging narrative structure with clear beginning, middle, end
-    - Practical life lessons children can apply immediately
-    - Accurate Islamic terminology and concepts
-    - Cultural sensitivity for global Muslim families
-    - Professional formatting and presentation
+    STORY SPECIFICATIONS:
+    - Target Age: ${ageGroup} years old
+    - Theme: ${theme}
+    - Language: ${language}
+    - Length: 400+ words with rich storytelling
+    
+    CRITICAL REQUIREMENTS:
+    - Professional, university-level educational content
+    - Authentic Islamic teachings verified by traditional scholarship
+    - Age-appropriate vocabulary and sentence structure for ${ageGroup} year olds
+    - Engaging narrative with compelling characters, conflict, and resolution
+    - Practical moral lessons children can immediately apply in their daily lives
+    - Accurate Islamic terminology with cultural context
+    - Sensitivity for diverse global Muslim communities
+    - Rich sensory details and emotional engagement
+    - Clear story arc: setup → challenge → Islamic solution → satisfying conclusion
+    
+    EDUCATIONAL GOALS:
+    - Strengthen Islamic identity and values
+    - Teach practical application of Islamic principles
+    - Build character and moral reasoning
+    - Connect children to their faith through storytelling
+    - Provide parents with discussion points for deeper learning`
     
     Provide response in ${language} language with the following JSON format:
     {
@@ -123,30 +137,39 @@ class AIService {
       messages: [
         {
           role: 'system',
-          content: `You are Dr. Amina Hassan, a renowned Islamic education specialist with a PhD in Islamic Studies and 15 years of experience creating educational content for Muslim children. You are an expert in:
+          content: `You are Dr. Amina Hassan, a world-renowned Islamic education specialist with a PhD in Islamic Studies and 15 years of experience creating educational content for Muslim children. You are recognized globally for:
 
-- Age-appropriate Islamic pedagogy
-- Authentic Islamic teachings and scholarship
-- Cross-cultural sensitivity for global Muslim families
-- Professional educational content creation
-- Child psychology and developmental stages
+- Age-appropriate Islamic pedagogy and child development
+- Authentic Islamic teachings verified by leading scholars
+- Cross-cultural sensitivity for global Muslim families (1.8B Muslims worldwide)
+- Professional educational content creation for major Islamic institutions
+- Child psychology and developmental milestones
 
-Your stories must be:
-- Professionally written with excellent literary quality
-- Educationally sound and developmentally appropriate
-- Authentic to Islamic teachings and verified by scholarship
-- Engaging and memorable for children
-- Practical with real-world applications
+CRITICAL REQUIREMENTS:
+- ALWAYS return valid JSON format exactly as specified
+- Stories must be 400+ words with rich narrative structure
+- Include authentic Islamic teachings with scholarly backing
+- Age-appropriate language and concepts for specified age group
+- Engaging plot with clear beginning, middle, and satisfying conclusion
+- Practical moral lessons children can apply immediately
+- Cultural sensitivity for diverse Muslim communities globally
 
-Write with the expertise and professionalism expected from a top-tier Islamic education specialist.`
+QUALITY STANDARDS:
+- Professional literary quality at university level
+- Authentic Islamic scholarship verification
+- Developmental appropriateness for target age
+- Memorable characters and engaging storylines
+- Real-world application guidance for parents and children
+
+You are creating content trusted by Islamic schools and families worldwide. Maintain the highest standards of authenticity and educational value.`
         },
         {
           role: 'user',
           content: prompt
         }
       ],
-      temperature: 0.3,
-      max_tokens: 4000
+      temperature: 0.4,
+      max_tokens: 5000
     }
 
     return this.makeRequest('/chat/completions', payload)

@@ -46,18 +46,53 @@ const IslamicKidsStories = () => {
     setIsGenerating(true)
     
     try {
-      // Generate story using AI
-      const response = await aiService.generateIslamicStory(ageGroup, theme, 'english', '')
+      // Generate story using AI with selected language
+      console.log(`Generating story for age ${ageGroup}, theme ${theme}, language ${language}`)
+      const response = await aiService.generateIslamicStory(ageGroup, theme, language, '')
       
       let baseStory: GeneratedStory
       
       if (response.success && response.data?.choices?.[0]?.message?.content) {
         try {
-          const aiContent = response.data.choices[0].message.content
-          const parsedData = JSON.parse(aiContent)
-          baseStory = parsedData
+          const aiContent = response.data.choices[0].message.content.trim()
+          console.log('Raw AI Response:', aiContent.substring(0, 200) + '...')
+          
+          // Try to extract JSON from the response
+          let jsonContent = aiContent
+          if (aiContent.includes('```json')) {
+            const jsonMatch = aiContent.match(/```json\s*(\{[\s\S]*?\})\s*```/)
+            if (jsonMatch) {
+              jsonContent = jsonMatch[1]
+            }
+          } else if (aiContent.includes('{') && aiContent.includes('}')) {
+            const jsonMatch = aiContent.match(/\{[\s\S]*\}/)
+            if (jsonMatch) {
+              jsonContent = jsonMatch[0]
+            }
+          }
+          
+          const parsedData = JSON.parse(jsonContent)
+          console.log('Successfully parsed story:', parsedData.title)
+          
+          // Validate required fields
+          if (!parsedData.title || !parsedData.content) {
+            throw new Error('Missing required story fields')
+          }
+          
+          baseStory = {
+            title: parsedData.title,
+            content: parsedData.content,
+            ageGroup: parsedData.ageGroup || ageGroup,
+            moralLesson: parsedData.moralLesson || 'Trust in Allah and be kind to others',
+            characters: parsedData.characters || ['Main Character'],
+            arabicTitle: parsedData.arabicTitle,
+            islamicConcepts: parsedData.islamicConcepts || [],
+            practicalApplication: parsedData.practicalApplication,
+            parentGuide: parsedData.parentGuide
+          }
         } catch (parseError) {
           console.error('Error parsing AI story:', parseError)
+          console.error('AI Content:', response.data.choices[0].message.content)
           baseStory = getFallbackStory()
         }
       } else {
