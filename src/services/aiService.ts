@@ -72,7 +72,7 @@ class AIService {
     - Respectful and in line with Islamic values`
 
     const payload = {
-      model: 'ft:gpt-4o-mini-2024-07-18:personal:as-saadi-tafsir:Bt99KitP',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
@@ -122,7 +122,7 @@ class AIService {
     }`
 
     const payload = {
-      model: 'ft:gpt-4o-mini-2024-07-18:personal:as-saadi-tafsir:Bt99KitP',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
@@ -175,7 +175,7 @@ Focus on authenticity, simplicity, and educational value.`
     - Is accessible to modern Muslim readers`
 
     const payload = {
-      model: 'ft:gpt-4o-mini-2024-07-18:personal:as-saadi-tafsir:Bt99KitP',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
@@ -217,7 +217,7 @@ Focus on authenticity, simplicity, and educational value.`
     - Is appropriate for the specified category and situation`
 
     const payload = {
-      model: 'ft:gpt-4o-mini-2024-07-18:personal:as-saadi-tafsir:Bt99KitP',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
@@ -248,7 +248,7 @@ Focus on authenticity, simplicity, and educational value.`
     Provide only the translation without additional text.`
 
     const payload = {
-      model: 'ft:gpt-4o-mini-2024-07-18:personal:as-saadi-tafsir:Bt99KitP',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
@@ -281,7 +281,7 @@ Focus on authenticity, simplicity, and educational value.`
     console.log('API Key present:', OPENAI_API_KEY ? 'YES' : 'NO')
     
     const payload = {
-      model: 'ft:gpt-4o-mini-2024-07-18:personal:as-saadi-tafsir:Bt99KitP',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
@@ -335,7 +335,7 @@ Be conversational, ask questions, share wisdom naturally. Write in ${language}. 
   // Enhanced Tafsir generation with As-Saadi integration
   async generateTafsirExplanation(enhancedPrompt: string, language: string, level: string) {
     const payload = {
-      model: 'ft:gpt-4o-mini-2024-07-18:personal:as-saadi-tafsir:Bt99KitP',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
