@@ -328,18 +328,7 @@ Help them connect with this verse personally through As-Saadi's insights.`
         // Check for greetings first
         if (lowerInput.includes('salam') || lowerInput.includes('hello') || lowerInput.includes('hi') || lowerInput.includes('peace')) {
           source = 'AI Tafsir Assistant'
-          const greetingPrompt = `A user greets you with: "${inputMessage}"
-
-Respond warmly in ${language} as a wise tafsir teacher. Welcome them and immediately share a beautiful reflection from Quranic tafsir to engage them. Maybe share wisdom from Al-Fatiha about Allah's mercy, or how the Quran guides us daily. Make it conversational and inspiring, not just informational.
-
-Connect the greeting to tafsir wisdom and invite them to explore more verses together.`
-
-          const aiResponse = await generateSimpleResponse(greetingPrompt, language)
-          if (aiResponse.success && aiResponse.data) {
-            botResponse = `**Authentic Tafsir:**\n${aiResponse.data}`
-          } else {
-            botResponse = `**Tafsir Wisdom:**\nWa alaykum assalam wa rahmatullahi wa barakatuh! \n\nYou know, every time we say "Assalamu Alaikum," we're following the beautiful guidance from the Quran. As Sheikh As-Saadi explains about Al-Fatiha, Allah begins with "Bismillah Ar-Rahman Ar-Raheem" - showing us that mercy and peace should be our starting point in everything.\n\nWhat verse would you like to explore today? I love sharing the deep wisdom hidden in every ayah!`
-          }
+          botResponse = `**Sheikh As-Saadi:**\nWa alaikum assalam wa rahmatullahi wa barakatuh. Welcome to Tafsir Sheikh As-Saadi. How can I help you with understanding the Quran today?`
         } else if (lowerInput.includes('ok') || lowerInput.includes('thanks') || lowerInput.includes('thank you') || lowerInput.includes('good') || lowerInput.includes('yes') || lowerInput.includes('alright')) {
           // Handle casual responses with AI engagement
           source = 'AI Tafsir Assistant'
