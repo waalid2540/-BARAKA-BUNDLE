@@ -11,7 +11,7 @@ interface ChatMessage {
   source?: string
 }
 
-const AITafsirChatbot = () => {
+const AsSaadiTafsirGenerator = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [inputMessage, setInputMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -52,7 +52,7 @@ const AITafsirChatbot = () => {
         'Selamün aleyküm ve rahmetullahi ve berakatüh\n\nBen otantik As-Saadi Tefsiri ile desteklenen AI Tefsir asistanıyım. Sadece Kuran tefsiri sağlarım.\n\n**Mevcut:**\n• Fatiha (1-7)\n• Bakara (1-3)\n\nAs-Saadi tefsiri + çağdaş uygulamalar için herhangi bir ayet sorun.' :
         language === 'indonesian' ?
         'Assalamu\'alaikum warahmatullahi wabarakatuh\n\nSaya asisten AI Tafsir yang didukung Tafsir As-Saadi otentik. Saya hanya menyediakan tafsir Al-Quran.\n\n**Tersedia:**\n• Al-Fatiha (1-7)\n• Al-Baqarah (1-3)\n\nTanyakan ayat apa pun untuk tafsir As-Saadi + aplikasi kontemporer.' :
-        'Assalamu Alaikum wa Rahmatullahi wa Barakatuh\n\nI am an AI Tafsir assistant powered by authentic Tafsir As-Saadi. I provide Quranic commentary exclusively.\n\n**Available:**\n• Al-Fatiha (1-7)\n• Al-Baqarah (1-3)\n\n**Language Support:**\nSay "explain in Arabic" or "en español" to switch languages automatically!\n\nAsk about any verse for As-Saadi tafsir + contemporary applications.',
+        'Assalamu Alaikum wa Rahmatullahi wa Barakatuh\n\n**Pure As-Saadi Tafsir Generator**\nI provide the exact, authentic explanations from Sheikh Abdurrahman As-Saadi - no AI additions or modifications.\n\n**Available Authentic Tafsir:**\n• Al-Fatiha (1-7) - Complete\n• Al-Baqarah (1-3) - First 3 verses\n\n**Language Support:**\nSay "explain in Arabic" or "en español" to switch languages automatically!\n\nAsk about any verse to get Sheikh As-Saadi\'s pure, unmodified explanation.',
       timestamp: new Date()
     }
     setMessages([welcomeMessage])
@@ -275,42 +275,20 @@ const AITafsirChatbot = () => {
         const tafsir = tafsirSaadiService.getTafsirForVerse(verseRef.surah, verseRef.ayah)
         
         if (tafsir) {
-          // We have authentic As-Saadi explanation!
-          source = 'AI Tafsir Assistant'
-          verseInfo = `**${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}**\n\n**Arabic Text:**\n${tafsir.arabicText}\n\n**Translation:**\n${tafsir.translation}\n\n**Tafsir As-Saadi:**\n${tafsir.tafsirSaadi}\n\n`
-          
-          // Get engaging AI enhancement based on As-Saadi + user question
-          const aiPrompt = `A person asks: "${inputMessage}"
+          // Show ONLY authentic As-Saadi explanation - no AI additions
+          source = 'Tafsir As-Saadi Database'
+          botResponse = `**${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}**
 
-This relates to ${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}.
+**Arabic Text:**
+${tafsir.arabicText}
 
-Sheikh As-Saadi's authentic explanation: "${tafsir.tafsirSaadi}"
+**Translation:**
+${tafsir.translation}
 
-As a wise tafsir teacher, provide an engaging response in ${language} that:
-1. Acknowledges their question warmly
-2. Shares As-Saadi's wisdom in an accessible way
-3. Gives practical reflections for their daily life
-4. Makes the tafsir come alive with examples or stories
-5. Be conversational and inspiring, not academic
+**Tafsir As-Saadi:**
+${tafsir.tafsirSaadi}
 
-Help them connect with this verse personally through As-Saadi's insights.`
-
-          console.log('About to call AI with prompt:', aiPrompt.substring(0, 100) + '...')
-          const aiResponse = await generateSimpleResponse(aiPrompt, language)
-          console.log('AI Response received:', aiResponse)
-          
-          if (aiResponse.success && aiResponse.data) {
-            console.log('AI data exists:', aiResponse.data.substring(0, 50))
-            botResponse = `**Authentic Tafsir:**\n${aiResponse.data}`
-          } else {
-            console.error('AI failed with error:', aiResponse.error)
-            // Better fallback with some actual guidance
-            if (verseRef.surah === 1 && verseRef.ayah === 1) {
-              botResponse = `**Authentic Tafsir:**\nAs Sheikh As-Saadi explains, Bismillah contains the most beautiful names of Allah. We should begin every action with this blessed phrase, seeking Allah's blessing and guidance. It reminds us that all success comes from Allah alone.`
-            } else {
-              botResponse = `**Authentic Tafsir:**\nBased on Sheikh As-Saadi's authentic commentary above, this verse provides essential guidance for our spiritual development. The explanation highlights timeless principles that remain highly relevant for contemporary Muslim practice.`
-            }
-          }
+*This is the authentic explanation from Sheikh Abdurrahman As-Saadi (may Allah have mercy on him).*`
         } else {
           // Verse not in As-Saadi database
           botResponse = language === 'arabic' ?
@@ -608,4 +586,4 @@ Be conversational, wise, and educational. Share practical reflections from tafsi
   )
 }
 
-export default AITafsirChatbot
+export default AsSaadiTafsirGenerator
