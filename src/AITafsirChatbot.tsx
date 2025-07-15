@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { tafsirSaadiService } from './services/tafsirSaadiProcessor'
+// Removed As-Saadi dependency for pure AI Quran Reflection
 import { generateSimpleResponse } from './services/aiService'
 
 interface ChatMessage {
@@ -47,11 +47,11 @@ const QuranReflectionGenerator = () => {
       id: '1',
       type: 'bot',
       content: language === 'arabic' ?
-        'السلام عليكم ورحمة الله وبركاته\n\nأنا مساعد تفسير القرآن المدعوم بتفسير السعدي الأصيل. أقدم تفسيرات قرآنية حصرياً.\n\n**المتاح:**\n• الفاتحة (1-7)\n• البقرة (1-3)\n\nاسأل عن أي آية للحصول على تفسير السعدي + تطبيقات معاصرة.' :
+        'السلام عليكم ورحمة الله وبركاته\n\n**مولد تأملات القرآن بالذكاء الاصطناعي**\nأقدم دروس حياة ملهمة وتأملات شخصية من آيات القرآن للنمو الروحي اليومي.\n\n**الميزات:**\n• دروس الحياة من أي آية قرآنية\n• مطالبات التأمل الشخصي\n• التطبيقات المعاصرة\n• أسئلة التفكير للتطوير الروحي' :
         language === 'turkish' ?
-        'Selamün aleyküm ve rahmetullahi ve berakatüh\n\nBen otantik As-Saadi Tefsiri ile desteklenen AI Tefsir asistanıyım. Sadece Kuran tefsiri sağlarım.\n\n**Mevcut:**\n• Fatiha (1-7)\n• Bakara (1-3)\n\nAs-Saadi tefsiri + çağdaş uygulamalar için herhangi bir ayet sorun.' :
+        'Selamün aleyküm ve rahmetullahi ve berakatüh\n\n**AI Kuran Yansıması Üreticisi**\nKuran ayetlerinden günlük ruhani gelişim için ilham verici yaşam dersleri ve kişisel yansımalar sağlarım.\n\n**Özellikler:**\n• Herhangi bir Kuran ayetinden yaşam dersleri\n• Kişisel yansıma istekleri\n• Çağdaş uygulamalar\n• Ruhani gelişim için günlük sorular' :
         language === 'indonesian' ?
-        'Assalamu\'alaikum warahmatullahi wabarakatuh\n\nSaya asisten AI Tafsir yang didukung Tafsir As-Saadi otentik. Saya hanya menyediakan tafsir Al-Quran.\n\n**Tersedia:**\n• Al-Fatiha (1-7)\n• Al-Baqarah (1-3)\n\nTanyakan ayat apa pun untuk tafsir As-Saadi + aplikasi kontemporer.' :
+        'Assalamu\'alaikum warahmatullahi wabarakatuh\n\n**AI Generator Refleksi Quran**\nSaya menyediakan pelajaran hidup yang menginspirasi dan refleksi pribadi dari ayat-ayat Quran untuk pertumbuhan spiritual harian.\n\n**Fitur:**\n• Pelajaran hidup dari ayat Quran manapun\n• Prompt refleksi pribadi\n• Aplikasi kontemporer\n• Pertanyaan jurnal untuk pengembangan spiritual' :
         'Assalamu Alaikum wa Rahmatullahi wa Barakatuh\n\n**AI Quran Reflection Generator**\nI provide inspiring life lessons and personal reflections from Quranic verses for daily spiritual growth.\n\n**Features:**\n• Life Lessons from any Quranic verse\n• Personal Reflection prompts\n• Contemporary Applications\n• Journaling questions for spiritual development\n\n**Language Support:**\nSay "explain in Arabic" or "en español" to switch languages automatically!\n\nAsk about any verse or share your current situation for personalized Quranic wisdom.',
       timestamp: new Date()
     }
@@ -314,73 +314,42 @@ ${aiResponse.data}
         
         // Check for greetings first
         if (lowerInput.includes('salam') || lowerInput.includes('hello') || lowerInput.includes('hi') || lowerInput.includes('peace')) {
-          source = 'AI Tafsir Assistant'
-          botResponse = `**Sheikh As-Saadi:**\nWa alaikum assalam wa rahmatullahi wa barakatuh. Welcome to Tafsir Sheikh As-Saadi. How can I help you with understanding the Quran today?`
+          source = 'AI Quran Reflection'
+          botResponse = `**Quran Reflection:**\nWa alaikum assalam wa rahmatullahi wa barakatuh. Welcome to AI Quran Reflection. How can I help you with spiritual guidance today?`
         } else if (lowerInput.includes('ok') || lowerInput.includes('thanks') || lowerInput.includes('thank you') || lowerInput.includes('good') || lowerInput.includes('yes') || lowerInput.includes('alright')) {
           // Handle casual responses with AI engagement
-          source = 'AI Tafsir Assistant'
-          const casualPrompt = `A student says: "${inputMessage}"
+          source = 'AI Quran Reflection'
+          const casualPrompt = `A person says: "${inputMessage}"
           
-This is a casual response. As Sheikh As-Saadi, respond warmly and naturally, then ask an engaging question about tafsir to continue the conversation. Maybe ask about their favorite verse, what they're currently reading, or suggest exploring a beautiful ayah together.
+This is a casual response. As an AI Quran Reflection guide, respond warmly and naturally, then ask an engaging question about spiritual growth to continue the conversation. Maybe ask about their current spiritual journey, what they're reflecting on, or suggest exploring a meaningful verse together.
 
-Be conversational and genuinely interested in their spiritual journey. Write in ${language}.`
+Be conversational and genuinely interested in their spiritual development. Write in ${language}.`
 
           const aiResponse = await generateSimpleResponse(casualPrompt, language)
           botResponse = aiResponse.success && aiResponse.data ? 
-            `**Sheikh As-Saadi:**\n${aiResponse.data}` :
-            `**Sheikh As-Saadi:**\nAlhamdulillah! I'm glad we're connecting. You know, every conversation about the Quran is a blessing. 
+            `**Quran Reflection:**\n${aiResponse.data}` :
+            `**Quran Reflection:**\nAlhamdulillah! I'm glad we're connecting. Every conversation about spiritual growth is a blessing. 
 
-What's been on your heart lately? Is there a particular verse or concept you've been thinking about? I'd love to explore some beautiful tafsir together!`
+What's been on your heart lately? Is there a particular verse or spiritual concept you've been reflecting on? I'd love to explore some meaningful Quranic wisdom together!`
         } else {
-          // General Islamic question - search As-Saadi database
-          const searchResults = tafsirSaadiService.searchTafsir(inputMessage)
-        
-        if (searchResults.length > 0) {
-          const relevantTafsir = searchResults[0]
-          source = 'AI Tafsir Assistant'
-          verseInfo = `**Related Verse: ${relevantTafsir.surahName} ${relevantTafsir.surah}:${relevantTafsir.ayah}**\n\n**Arabic Text:**\n${relevantTafsir.arabicText}\n\n**Translation:**\n${relevantTafsir.translation}\n\n**Sheikh As-Saadi's Commentary:**\n${relevantTafsir.tafsirSaadi}\n\n`
+          // General questions - provide AI Quran reflection
+          source = 'AI Quran Reflection'
           
-          const aiPrompt = `A student asks about: "${inputMessage}"
-
-I found this relevant verse with Sheikh As-Saadi's commentary: "${relevantTafsir.tafsirSaadi}"
-
-As Dr. Ahmad, provide a scholarly response in ${language} that:
-1. Explains how this verse relates to their question
-2. Draws insights from As-Saadi's commentary
-3. Offers practical guidance for Muslim life
-4. Maintains professional academic tone`
-
-          const aiResponse = await generateSimpleResponse(aiPrompt, language)
-          botResponse = aiResponse.success && aiResponse.data ? 
-            `**Tafsir Analysis:**\n${aiResponse.data}` :
-            `**Tafsir Analysis:**\nThis verse provides relevant guidance from the Quran. Sheikh As-Saadi's commentary offers valuable insights that address your question within the framework of authentic Islamic scholarship.`
-        } else {
-          // No As-Saadi content found - use AI for general Islamic guidance
-          source = 'AI Tafsir Assistant'
           const generalPrompt = `A user asks: "${inputMessage}"
 
-As a wise tafsir teacher, connect their question to Quranic wisdom in ${language}. Even if they ask about life, relationships, struggles, or any topic - relate it back to relevant Quranic verses and As-Saadi insights.
+As an AI Quran Reflection guide, provide a thoughtful response in ${language} that:
+1. Connects their question to relevant Quranic wisdom
+2. Offers practical life guidance and spiritual reflection
+3. Includes journaling questions for deeper contemplation
+4. Provides actionable steps for spiritual growth
+5. Makes it personally applicable and inspiring
 
-For example:
-- If they ask about patience → Connect to Quranic verses about sabr
-- If they ask about guidance → Reference Al-Fatiha "Guide us to the straight path"
-- If they ask about mercy → Connect to "Ar-Rahman Ar-Raheem"
-
-Be conversational, wise, and educational. Share practical reflections from tafsir that help them in daily life. Make the Quran come alive for them through As-Saadi's wisdom.`
+Even if they ask about life, relationships, struggles, or any topic - relate it back to relevant Quranic verses and provide meaningful reflections for their spiritual journey.`
 
           const aiResponse = await generateSimpleResponse(generalPrompt, language)
-          if (aiResponse.success && aiResponse.data) {
-            botResponse = `**Tafsir Analysis:**\n${aiResponse.data}`
-          } else {
-            botResponse = language === 'arabic' ?
-              'يمكنك سؤالي عن آيات محددة من:\n\n**الفاتحة (1-7):** "اشرح البسملة"، "الفاتحة 2"\n**البقرة (1-3):** "البقرة 1"، "البقرة 2"\n\nأو اسأل عن مواضيع مثل: "الرحمة"، "الهداية"، "الحمد"' :
-              language === 'turkish' ?
-              'Şu ayetler hakkında soru sorabilirsiniz:\n\n**Fatiha (1-7):** "Bismillah\'ı açıkla", "Fatiha 2"\n**Bakara (1-3):** "Bakara 1", "Bakara 2"\n\nVeya şu konular: "Rahmet", "Hidayet", "Hamd"' :
-              language === 'indonesian' ?
-              'Anda bisa bertanya tentang ayat-ayat:\n\n**Al-Fatiha (1-7):** "Jelaskan Bismillah", "Al-Fatiha 2"\n**Al-Baqarah (1-3):** "Al-Baqarah 1", "Al-Baqarah 2"\n\nAtau topik: "Rahmat", "Hidayah", "Puji"' :
-              'You can ask me about specific verses:\n\n**Al-Fatiha (1-7):** "Explain Bismillah", "Al-Fatiha 2"\n**Al-Baqarah (1-3):** "Al-Baqarah 1", "Al-Baqarah 2"\n\nOr topics like: "Mercy", "Guidance", "Praise"'
-          }
-        }
+          botResponse = aiResponse.success && aiResponse.data ? 
+            `**Quran Reflection:**\n${aiResponse.data}` :
+            `**Quran Reflection:**\nEvery question and situation in life can be illuminated by Quranic wisdom. Consider how the teachings of the Quran apply to your current circumstances and make du'a for guidance and understanding.`
         }
       }
 
