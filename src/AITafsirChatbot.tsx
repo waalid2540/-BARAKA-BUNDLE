@@ -11,7 +11,7 @@ interface ChatMessage {
   source?: string
 }
 
-const AsSaadiTafsirGenerator = () => {
+const QuranReflectionGenerator = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [inputMessage, setInputMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -52,7 +52,7 @@ const AsSaadiTafsirGenerator = () => {
         'Selamün aleyküm ve rahmetullahi ve berakatüh\n\nBen otantik As-Saadi Tefsiri ile desteklenen AI Tefsir asistanıyım. Sadece Kuran tefsiri sağlarım.\n\n**Mevcut:**\n• Fatiha (1-7)\n• Bakara (1-3)\n\nAs-Saadi tefsiri + çağdaş uygulamalar için herhangi bir ayet sorun.' :
         language === 'indonesian' ?
         'Assalamu\'alaikum warahmatullahi wabarakatuh\n\nSaya asisten AI Tafsir yang didukung Tafsir As-Saadi otentik. Saya hanya menyediakan tafsir Al-Quran.\n\n**Tersedia:**\n• Al-Fatiha (1-7)\n• Al-Baqarah (1-3)\n\nTanyakan ayat apa pun untuk tafsir As-Saadi + aplikasi kontemporer.' :
-        'Assalamu Alaikum wa Rahmatullahi wa Barakatuh\n\n**Pure As-Saadi Tafsir Generator**\nI provide the exact, authentic explanations from Sheikh Abdurrahman As-Saadi - no AI additions or modifications.\n\n**Available Authentic Tafsir:**\n• Al-Fatiha (1-7) - Complete\n• Al-Baqarah (1-3) - First 3 verses\n\n**Language Support:**\nSay "explain in Arabic" or "en español" to switch languages automatically!\n\nAsk about any verse to get Sheikh As-Saadi\'s pure, unmodified explanation.',
+        'Assalamu Alaikum wa Rahmatullahi wa Barakatuh\n\n**AI Quran Reflection Generator**\nI provide inspiring life lessons and personal reflections from Quranic verses for daily spiritual growth.\n\n**Features:**\n• Life Lessons from any Quranic verse\n• Personal Reflection prompts\n• Contemporary Applications\n• Journaling questions for spiritual development\n\n**Language Support:**\nSay "explain in Arabic" or "en español" to switch languages automatically!\n\nAsk about any verse or share your current situation for personalized Quranic wisdom.',
       timestamp: new Date()
     }
     setMessages([welcomeMessage])
@@ -271,33 +271,42 @@ const AsSaadiTafsirGenerator = () => {
       let source = 'AI Assistant'
 
       if (verseRef) {
-        // User asked about specific verse - check As-Saadi database
-        const tafsir = tafsirSaadiService.getTafsirForVerse(verseRef.surah, verseRef.ayah)
+        // User asked about specific verse - generate AI Quran reflection
+        source = 'AI Quran Reflection'
         
-        if (tafsir) {
-          // Show ONLY authentic As-Saadi explanation - no AI additions
-          source = 'Tafsir As-Saadi Database'
-          botResponse = `**${tafsir.surahName} ${verseRef.surah}:${verseRef.ayah}**
+        const reflectionPrompt = `Generate a comprehensive Quran reflection for verse ${verseRef.surah}:${verseRef.ayah} in ${language}.
 
-**Arabic Text:**
-${tafsir.arabicText}
+Create a spiritual reflection in this format:
+**Life Lesson:** Core wisdom from this verse
+**Personal Reflection:** How this applies to daily life
+**Contemporary Application:** Modern situations where this guidance helps
+**Journaling Questions:** 2-3 questions for deeper contemplation
+**Action Steps:** Practical ways to implement this wisdom
 
-**Translation:**
-${tafsir.translation}
+Make it inspiring, practical, and spiritually enriching for personal growth.`
 
-**Tafsir As-Saadi:**
-${tafsir.tafsirSaadi}
+        const aiResponse = await generateSimpleResponse(reflectionPrompt, language)
+        
+        if (aiResponse.success && aiResponse.data) {
+          botResponse = `**Quran Reflection: ${verseRef.surah}:${verseRef.ayah}**
 
-*This is the authentic explanation from Sheikh Abdurrahman As-Saadi (may Allah have mercy on him).*`
+${aiResponse.data}
+
+*Generated for your spiritual growth and daily application*`
         } else {
-          // Verse not in As-Saadi database
-          botResponse = language === 'arabic' ?
-            `عذراً، الآية ${verseRef.surah}:${verseRef.ayah} غير متوفرة حالياً في قاعدة بيانات تفسير السعدي.\n\n**المتوفر حالياً:**\n• الفاتحة 1-7 (جميع الآيات)\n• البقرة 1-3 (أول 3 آيات)\n\nجرب: "اشرح البسملة" أو "الفاتحة 2"` :
-            language === 'turkish' ?
-            `Üzgünüm, ${verseRef.surah}:${verseRef.ayah} ayeti As-Saadi veritabanında mevcut değil.\n\n**Mevcut:**\n• Fatiha 1-7 (tüm ayetler)\n• Bakara 1-3 (ilk 3 ayet)\n\nDeneyin: "Bismillah'ı açıkla" veya "Fatiha 2"` :
-            language === 'indonesian' ?
-            `Maaf, ayat ${verseRef.surah}:${verseRef.ayah} belum tersedia dalam database As-Saadi.\n\n**Tersedia:**\n• Al-Fatiha 1-7 (semua ayat)\n• Al-Baqarah 1-3 (3 ayat pertama)\n\nCoba: "Jelaskan Bismillah" atau "Al-Fatiha 2"` :
-            `Sorry, verse ${verseRef.surah}:${verseRef.ayah} is not available in our As-Saadi database yet.\n\n**Available:**\n• Al-Fatiha 1-7 (all verses)\n• Al-Baqarah 1-3 (first 3 verses)\n\nTry: "Explain Bismillah" or "Al-Fatiha 2"`
+          botResponse = `**Quran Reflection: ${verseRef.surah}:${verseRef.ayah}**
+
+**Life Lesson:** Every verse in the Quran contains timeless wisdom for spiritual growth and practical guidance.
+
+**Personal Reflection:** Consider how this verse might apply to your current life situation and spiritual journey.
+
+**Contemporary Application:** Look for ways to implement Quranic teachings in your daily interactions and decisions.
+
+**Journaling Questions:** 
+- How can I apply this verse's wisdom today?
+- What does this teach me about my relationship with Allah?
+
+**Action Steps:** Make du'a for understanding and seek to embody Quranic values in your actions.`
         }
       } else {
         // Handle conversational messages and general questions
@@ -586,4 +595,4 @@ Be conversational, wise, and educational. Share practical reflections from tafsi
   )
 }
 
-export default AsSaadiTafsirGenerator
+export default QuranReflectionGenerator
