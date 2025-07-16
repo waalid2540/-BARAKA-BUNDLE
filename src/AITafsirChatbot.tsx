@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-// Removed As-Saadi dependency for pure AI Quran Reflection
 import { generateSimpleResponse } from './services/aiService'
+import { quranLifeLessons, getReflectionByDay, getReflectionsByCategory, getRandomReflection } from './services/quranReflectionData'
 
 interface ChatMessage {
   id: string
