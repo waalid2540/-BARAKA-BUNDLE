@@ -103,6 +103,18 @@ const QuranReflectionGenerator = () => {
     return null
   }
 
+  // Helper function to get surah name
+  const getSurahName = (surahNumber: number): string => {
+    const surahNames: { [key: number]: string } = {
+      1: "Al-Fatiha",
+      2: "Al-Baqarah", 
+      3: "Ali 'Imran",
+      14: "Ibrahim",
+      39: "Az-Zumar"
+    }
+    return surahNames[surahNumber] || `Surah ${surahNumber}`
+  }
+
   // Parse user message to find verse references
   const parseVerseReference = (message: string): { surah: number, ayah: number } | null => {
     const lowerMessage = message.toLowerCase()
@@ -271,30 +283,61 @@ const QuranReflectionGenerator = () => {
       let source = 'AI Assistant'
 
       if (verseRef) {
-        // User asked about specific verse - generate AI Quran reflection
-        source = 'AI Quran Reflection'
+        // Check for existing 30for30 Life Lessons first
+        const existingReflection = quranLifeLessons.find(lesson => 
+          lesson.surah === getSurahName(verseRef.surah) && lesson.ayah === verseRef.ayah
+        )
         
-        const reflectionPrompt = `Generate a comprehensive Quran reflection for verse ${verseRef.surah}:${verseRef.ayah} in ${language}.
+        if (existingReflection) {
+          // Use the pre-written 30for30 Life Lesson
+          source = '30for30 Life Lessons'
+          botResponse = `**${existingReflection.title}** - Day ${existingReflection.day}
+**Verse:** ${existingReflection.verse} (${existingReflection.surah})
 
-Create a spiritual reflection in this format:
+**Arabic:** ${existingReflection.arabicText}
+**Translation:** ${existingReflection.translation}
+
+**Life Lesson:** ${existingReflection.lifeLesson}
+
+**Personal Reflection:** ${existingReflection.personalReflection}
+
+**Contemporary Application:** ${existingReflection.contemporaryApplication}
+
+**Journaling Questions:**
+${existingReflection.journalingQuestions.map(q => `• ${q}`).join('\n')}
+
+**Action Steps:**
+${existingReflection.actionSteps.map(s => `• ${s}`).join('\n')}
+
+**Spiritual Insight:** ${existingReflection.spiritualInsight}
+
+*From the 30for30 Quran Life Lessons Journal*`
+        } else {
+          // Generate AI reflection for verses not in the 30for30 collection
+          source = 'AI Quran Reflection'
+          
+          const reflectionPrompt = `Generate a comprehensive Quran reflection for verse ${verseRef.surah}:${verseRef.ayah} in ${language}.
+
+Create a 30for30 Life Lessons style reflection in this format:
 **Life Lesson:** Core wisdom from this verse
-**Personal Reflection:** How this applies to daily life
+**Personal Reflection:** How this applies to daily spiritual growth
 **Contemporary Application:** Modern situations where this guidance helps
-**Journaling Questions:** 2-3 questions for deeper contemplation
-**Action Steps:** Practical ways to implement this wisdom
+**Journaling Questions:** 3 questions for deeper contemplation
+**Action Steps:** 3 practical ways to implement this wisdom
+**Spiritual Insight:** A profound takeaway for the soul
 
 Make it inspiring, practical, and spiritually enriching for personal growth.`
 
-        const aiResponse = await generateSimpleResponse(reflectionPrompt, language)
-        
-        if (aiResponse.success && aiResponse.data) {
-          botResponse = `**Quran Reflection: ${verseRef.surah}:${verseRef.ayah}**
+          const aiResponse = await generateSimpleResponse(reflectionPrompt, language)
+          
+          if (aiResponse.success && aiResponse.data) {
+            botResponse = `**Quran Reflection: ${verseRef.surah}:${verseRef.ayah}**
 
 ${aiResponse.data}
 
-*Generated for your spiritual growth and daily application*`
-        } else {
-          botResponse = `**Quran Reflection: ${verseRef.surah}:${verseRef.ayah}**
+*Generated in 30for30 Life Lessons style*`
+          } else {
+            botResponse = `**Quran Reflection: ${verseRef.surah}:${verseRef.ayah}**
 
 **Life Lesson:** Every verse in the Quran contains timeless wisdom for spiritual growth and practical guidance.
 
@@ -305,8 +348,13 @@ ${aiResponse.data}
 **Journaling Questions:** 
 - How can I apply this verse's wisdom today?
 - What does this teach me about my relationship with Allah?
+- How does this verse challenge my current perspective?
 
-**Action Steps:** Make du'a for understanding and seek to embody Quranic values in your actions.`
+**Action Steps:** 
+- Make du'a for understanding
+- Reflect on this verse during prayer
+- Apply this wisdom in daily interactions`
+          }
         }
       } else {
         // Handle conversational messages and general questions
