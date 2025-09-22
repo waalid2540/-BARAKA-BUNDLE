@@ -191,15 +191,21 @@ const LandingPageNew = () => {
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center">
                   <span className="text-3xl text-white">👶</span>
                 </div>
-                <div>
+                <div className="flex-1">
                   <h3 className="text-2xl font-semibold text-gray-900 mb-3">Islamic Name Generator</h3>
                   <p className="text-gray-600 mb-6">
                     Generate beautiful Islamic names with detailed meanings, origins, and spiritual significance.
                   </p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mb-4">
                     <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">10+ Languages</span>
                     <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Arabic Script</span>
                   </div>
+                  <button
+                    onClick={() => window.location.href = '/name-poster'}
+                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                  >
+                    Try Now →
+                  </button>
                 </div>
               </div>
             </div>
@@ -209,15 +215,21 @@ const LandingPageNew = () => {
                 <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center">
                   <span className="text-3xl text-white">📚</span>
                 </div>
-                <div>
+                <div className="flex-1">
                   <h3 className="text-2xl font-semibold text-gray-900 mb-3">AI Islamic Stories for Kids</h3>
                   <p className="text-gray-600 mb-6">
                     Create engaging, age-appropriate Islamic stories with voice-over that teach moral values.
                   </p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mb-4">
                     <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Voice-Over</span>
                     <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Moral Lessons</span>
                   </div>
+                  <button
+                    onClick={() => window.location.href = '/kids-stories'}
+                    className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium"
+                  >
+                    Try Now →
+                  </button>
                 </div>
               </div>
             </div>
@@ -227,15 +239,21 @@ const LandingPageNew = () => {
                 <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center">
                   <span className="text-3xl text-white">📖</span>
                 </div>
-                <div>
+                <div className="flex-1">
                   <h3 className="text-2xl font-semibold text-gray-900 mb-3">AI Tafsir Generator</h3>
                   <p className="text-gray-600 mb-6">
                     Get comprehensive Quranic explanations with historical context and practical applications.
                   </p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mb-4">
                     <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">Scholarly</span>
                     <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">Authentic</span>
                   </div>
+                  <button
+                    onClick={() => window.location.href = '/ebook-generator'}
+                    className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors font-medium"
+                  >
+                    Try Now →
+                  </button>
                 </div>
               </div>
             </div>
@@ -245,15 +263,21 @@ const LandingPageNew = () => {
                 <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center">
                   <span className="text-3xl text-white">🤲</span>
                 </div>
-                <div>
+                <div className="flex-1">
                   <h3 className="text-2xl font-semibold text-gray-900 mb-3">AI Du'a Generator</h3>
                   <p className="text-gray-600 mb-6">
                     Find perfect prayers with pronunciation and authentic sources for every situation.
                   </p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mb-4">
                     <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm">Pronunciation</span>
                     <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm">Authentic Sources</span>
                   </div>
+                  <button
+                    onClick={() => window.location.href = '/dua-generator'}
+                    className="bg-amber-600 text-white px-6 py-2 rounded-lg hover:bg-amber-700 transition-colors font-medium"
+                  >
+                    Try Now →
+                  </button>
                 </div>
               </div>
             </div>

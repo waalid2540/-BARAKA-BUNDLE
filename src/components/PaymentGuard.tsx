@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { loadStripe } from '@stripe/stripe-js'
 
 // Use test key - replace with your actual Stripe publishable key
-const stripePromise = loadStripe('pk_test_51234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
+// For demo purposes, we'll disable Stripe loading to prevent errors
+const stripePromise = null // loadStripe('pk_test_51234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
 
 interface PaymentGuardProps {
   children: React.ReactNode
@@ -39,17 +40,7 @@ const PaymentGuard: React.FC<PaymentGuardProps> = ({ children, featureName }) =>
     setProcessingPayment(true)
 
     try {
-      // In production, this should call your backend to create a Stripe checkout session
-      // For now, we'll simulate a payment flow
-      const stripe = await stripePromise
-
-      if (!stripe) {
-        alert('Stripe failed to load. Please try again.')
-        return
-      }
-
-      // Simulate successful payment for demo
-      // In production, replace this with actual Stripe checkout
+      // Simulate successful payment for demo (no Stripe required)
       setTimeout(() => {
         // Mark payment as successful
         localStorage.setItem('barakah_payment_session', JSON.stringify({
