@@ -285,11 +285,11 @@ const QuranReflectionGenerator = () => {
       if (verseRef) {
         // Check for existing 30for30 Life Lessons first
         const existingReflection = quranLifeLessons.find(lesson => 
-          lesson.surah === getSurahName(verseRef.surah) && lesson.ayah === verseRef.ayah
+          lesson.verse === `${verseRef.surah}:${verseRef.ayah}`
         )
         
         if (existingReflection) {
-          // Use the pre-written 30for30 Life Lesson
+          // Use ONLY the pre-written 30for30 Life Lesson
           source = '30for30 Life Lessons'
           botResponse = `**${existingReflection.title}** - Day ${existingReflection.day}
 **Verse:** ${existingReflection.verse} (${existingReflection.surah})
@@ -313,48 +313,19 @@ ${existingReflection.actionSteps.map(s => `• ${s}`).join('\n')}
 
 *From the 30for30 Quran Life Lessons Journal*`
         } else {
-          // Generate AI reflection for verses not in the 30for30 collection
-          source = 'AI Quran Reflection'
-          
-          const reflectionPrompt = `Generate a comprehensive Quran reflection for verse ${verseRef.surah}:${verseRef.ayah} in ${language}.
+          // If verse not in your dataset, show message
+          botResponse = `**Verse ${verseRef.surah}:${verseRef.ayah}**
 
-Create a 30for30 Life Lessons style reflection in this format:
-**Life Lesson:** Core wisdom from this verse
-**Personal Reflection:** How this applies to daily spiritual growth
-**Contemporary Application:** Modern situations where this guidance helps
-**Journaling Questions:** 3 questions for deeper contemplation
-**Action Steps:** 3 practical ways to implement this wisdom
-**Spiritual Insight:** A profound takeaway for the soul
+This verse is not yet included in the 30for30 Life Lessons collection.
 
-Make it inspiring, practical, and spiritually enriching for personal growth.`
+**Available Life Lessons:**
+• Day 1: Patience (2:153)
+• Day 2: Gratitude (14:7)  
+• Day 3: Trust (2:286)
+• Day 4: Forgiveness (39:53)
+• Day 5: Guidance (1:6)
 
-          const aiResponse = await generateSimpleResponse(reflectionPrompt, language)
-          
-          if (aiResponse.success && aiResponse.data) {
-            botResponse = `**Quran Reflection: ${verseRef.surah}:${verseRef.ayah}**
-
-${aiResponse.data}
-
-*Generated in 30for30 Life Lessons style*`
-          } else {
-            botResponse = `**Quran Reflection: ${verseRef.surah}:${verseRef.ayah}**
-
-**Life Lesson:** Every verse in the Quran contains timeless wisdom for spiritual growth and practical guidance.
-
-**Personal Reflection:** Consider how this verse might apply to your current life situation and spiritual journey.
-
-**Contemporary Application:** Look for ways to implement Quranic teachings in your daily interactions and decisions.
-
-**Journaling Questions:** 
-- How can I apply this verse's wisdom today?
-- What does this teach me about my relationship with Allah?
-- How does this verse challenge my current perspective?
-
-**Action Steps:** 
-- Make du'a for understanding
-- Reflect on this verse during prayer
-- Apply this wisdom in daily interactions`
-          }
+Please select one of these verses to see the complete 30for30 Life Lesson.`
         }
       } else {
         // Handle conversational messages and general questions

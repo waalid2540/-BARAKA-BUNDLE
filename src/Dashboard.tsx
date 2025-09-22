@@ -58,11 +58,11 @@ const Dashboard = () => {
 
   const handleToolSelect = (toolId: string) => {
     setSelectedTool(toolId)
-    // Navigate to the specific tool
+    // Navigate to the specific tool - using direct marketing routes
     const routes = {
-      'name-generator': '/islamic-name-generator',
-      'kids-stories': '/islamic-kids-stories',
-      'tafsir-generator': '/tafsir-generator',
+      'name-generator': '/name-poster',
+      'kids-stories': '/kids-stories',
+      'tafsir-generator': '/ebook-generator',
       'ai-tafsir-chatbot': '/ai-tafsir-chatbot',
       'dua-generator': '/dua-generator'
     }
